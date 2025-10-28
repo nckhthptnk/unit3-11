@@ -157,14 +157,26 @@
             position: fixed;
             top: 20px;
             right: 20px;
+            left: 20px;
             background: #10b981;
             color: white;
-            padding: 12px 24px;
+            padding: 12px 16px;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            transform: translateX(400px);
+            transform: translateY(-100px);
             transition: transform 0.3s ease;
             z-index: 1001;
+            text-align: center;
+        }
+        @media (min-width: 640px) {
+            .toast {
+                left: auto;
+                right: 20px;
+                width: auto;
+                padding: 12px 24px;
+                transform: translateX(400px);
+                text-align: left;
+            }
         }
         .toast.show {
             transform: translateX(0);
@@ -187,149 +199,163 @@
  <body class="min-h-full"><!-- Home Button - Fixed Position --> <button id="home-button" onclick="showSection('home')" class="fixed top-4 left-4 z-50 bg-white hover:bg-gray-50 text-gray-700 hover:text-gray-900 p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200">
    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-7a1 1 0 011-1h2a1 1 0 011 1v7a1 1 0 001 1m-6 0h6" />
    </svg></button>
-  <main class="min-h-full p-6" id="main-content">
-   <div class="max-w-4xl mx-auto"><!-- Home Screen -->
+  <main class="min-h-full p-3 sm:p-4 md:p-6" id="main-content">
+   <div class="max-w-7xl mx-auto"><!-- Home Screen -->
     <div id="home-screen" class="space-y-8"><!-- Header -->
-     <div class="text-center relative"><!-- Home button next to title --> <button onclick="showSection('home')" class="absolute left-0 top-0 bg-white hover:bg-gray-50 text-gray-700 hover:text-gray-900 p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200">
-       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-7a1 1 0 011-1h2a1 1 0 011 1v7a1 1 0 001 1m-6 0h6" />
+     <div class="text-center relative px-2 sm:px-4"><!-- Home button next to title - hidden on mobile home screen --> <button onclick="showSection('home')" class="hidden sm:block absolute left-0 top-0 bg-white hover:bg-gray-50 text-gray-700 hover:text-gray-900 p-2 sm:p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200">
+       <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-7a1 1 0 011-1h2a1 1 0 011 1v7a1 1 0 001 1m-6 0h6" />
        </svg></button>
-      <h1 class="text-4xl font-bold mb-4" id="unit-title">Unit 3: Global Warming &amp; Ecosystems</h1>
-      <p class="text-lg text-gray-600" id="welcome-message">Chào mừng bạn đến với bài học tiếng Anh cùng Mega Master 11 nhé!</p>
+      <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 px-8 sm:px-0" id="unit-title">Unit 3: Global Warming &amp; Ecosystems</h1>
+      <p class="text-sm sm:text-base lg:text-lg text-gray-600 px-4 sm:px-0" id="welcome-message">Chào mừng bạn đến với bài học tiếng Anh cùng Mega Master 11 nhé!</p>
      </div><!-- Progress Section -->
-     <div class="bg-white rounded-lg p-6 shadow-md">
+     <div class="bg-white rounded-lg p-4 sm:p-6 shadow-md">
       <div class="flex justify-between items-center mb-4">
-       <h2 class="text-xl font-semibold">Tiến độ học tập</h2><span class="text-lg font-bold" id="progress-text">0%</span>
+       <h2 class="text-lg sm:text-xl font-semibold">Tiến độ học tập</h2><span class="text-lg sm:text-xl font-bold" id="progress-text">0%</span>
       </div><!-- Overall Progress Bar -->
-      <div class="mb-6">
-       <div class="flex justify-between items-center mb-2"><span class="text-sm font-medium">Tiến độ tổng thể</span> <span class="text-sm text-gray-600" id="overall-percentage">0%</span>
+      <div class="mb-4 sm:mb-6">
+       <div class="flex justify-between items-center mb-2"><span class="text-xs sm:text-sm font-medium">Tiến độ tổng thể</span> <span class="text-xs sm:text-sm text-gray-600" id="overall-percentage">0%</span>
        </div>
-       <div class="w-full bg-gray-200 rounded-full h-3">
-        <div class="progress-bar h-3 rounded-full" id="progress-bar" style="width: 0%"></div>
+       <div class="w-full bg-gray-200 rounded-full h-2 sm:h-3">
+        <div class="progress-bar h-2 sm:h-3 rounded-full" id="progress-bar" style="width: 0%"></div>
        </div>
       </div><!-- Individual Section Progress -->
-      <div class="grid md:grid-cols-3 gap-4"><!-- Vocabulary Progress -->
-       <div class="text-center">
-        <div class="mb-2">
-         <svg class="w-8 h-8 mx-auto mb-2 text-blue-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-         </svg>
-         <h3 class="font-semibold text-sm">Từ vựng</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4"><!-- Vocabulary Progress -->
+       <div class="text-center sm:text-center">
+        <div class="flex sm:block items-center sm:items-start">
+         <div class="flex-shrink-0 sm:mb-2">
+          <svg class="w-6 h-6 sm:w-8 sm:h-8 sm:mx-auto mb-0 sm:mb-2 text-blue-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+          </svg>
+         </div>
+         <div class="flex-1 ml-3 sm:ml-0">
+          <h3 class="font-semibold text-sm text-left sm:text-center mb-2">Từ vựng</h3>
+          <div class="w-full bg-gray-200 rounded-full h-2 mb-1">
+           <div class="bg-blue-600 h-2 rounded-full transition-all duration-300" id="vocab-progress-home" style="width: 0%"></div>
+          </div><span class="text-xs text-gray-600" id="vocab-progress-text"></span>
+         </div>
         </div>
-        <div class="w-full bg-gray-200 rounded-full h-2 mb-1">
-         <div class="bg-blue-600 h-2 rounded-full transition-all duration-300" id="vocab-progress-home" style="width: 0%"></div>
-        </div><span class="text-xs text-gray-600" id="vocab-progress-text"></span>
        </div><!-- Reading Progress -->
-       <div class="text-center">
-        <div class="mb-2">
-         <svg class="w-8 h-8 mx-auto mb-2 text-green-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-         </svg>
-         <h3 class="font-semibold text-sm">Đọc hiểu</h3>
+       <div class="text-center sm:text-center">
+        <div class="flex sm:block items-center sm:items-start">
+         <div class="flex-shrink-0 sm:mb-2">
+          <svg class="w-6 h-6 sm:w-8 sm:h-8 sm:mx-auto mb-0 sm:mb-2 text-green-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+         </div>
+         <div class="flex-1 ml-3 sm:ml-0">
+          <h3 class="font-semibold text-sm text-left sm:text-center mb-2">Đọc hiểu</h3>
+          <div class="w-full bg-gray-200 rounded-full h-2 mb-1">
+           <div class="bg-green-600 h-2 rounded-full transition-all duration-300" id="reading-progress-home" style="width: 0%"></div>
+          </div><span class="text-xs text-gray-600" id="reading-progress-text">0/5 câu</span>
+         </div>
         </div>
-        <div class="w-full bg-gray-200 rounded-full h-2 mb-1">
-         <div class="bg-green-600 h-2 rounded-full transition-all duration-300" id="reading-progress-home" style="width: 0%"></div>
-        </div><span class="text-xs text-gray-600" id="reading-progress-text">0/5 câu</span>
        </div><!-- Grammar Progress -->
-       <div class="text-center">
-        <div class="mb-2">
-         <svg class="w-8 h-8 mx-auto mb-2 text-purple-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-         </svg>
-         <h3 class="font-semibold text-sm">Ngữ pháp</h3>
+       <div class="text-center sm:text-center">
+        <div class="flex sm:block items-center sm:items-start">
+         <div class="flex-shrink-0 sm:mb-2">
+          <svg class="w-6 h-6 sm:w-8 sm:h-8 sm:mx-auto mb-0 sm:mb-2 text-purple-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+          </svg>
+         </div>
+         <div class="flex-1 ml-3 sm:ml-0">
+          <h3 class="font-semibold text-sm text-left sm:text-center mb-2">Ngữ pháp</h3>
+          <div class="w-full bg-gray-200 rounded-full h-2 mb-1">
+           <div class="bg-purple-600 h-2 rounded-full transition-all duration-300" id="grammar-progress-home" style="width: 0%"></div>
+          </div><span class="text-xs text-gray-600" id="grammar-progress-text">0/30 câu</span>
+         </div>
         </div>
-        <div class="w-full bg-gray-200 rounded-full h-2 mb-1">
-         <div class="bg-purple-600 h-2 rounded-full transition-all duration-300" id="grammar-progress-home" style="width: 0%"></div>
-        </div><span class="text-xs text-gray-600" id="grammar-progress-text">0/30 câu</span>
        </div>
       </div>
      </div><!-- Learning Sections -->
-     <div class="grid md:grid-cols-3 gap-6"><!-- Vocabulary Section -->
-      <div class="section-card bg-white rounded-xl p-6 shadow-lg cursor-pointer" onclick="showSection('vocabulary')">
+     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"><!-- Vocabulary Section -->
+      <div class="section-card bg-white rounded-xl p-4 sm:p-6 shadow-lg cursor-pointer" onclick="showSection('vocabulary')">
        <div class="text-center">
-        <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center">
-         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+        <div class="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 rounded-full flex items-center justify-center">
+         <svg class="w-6 h-6 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
          </svg>
         </div>
-        <h3 class="text-xl font-semibold mb-2" id="vocab-title">Từ vựng</h3>
-        <p class="text-gray-600 mb-4">Học từ mới với thẻ ghi nhớ tương tác</p>
+        <h3 class="text-lg sm:text-xl font-semibold mb-2" id="vocab-title">Từ vựng</h3>
+        <p class="text-sm sm:text-base text-gray-600 mb-2 sm:mb-4">Học từ mới với thẻ ghi nhớ tương tác</p>
        </div>
       </div><!-- Reading Section -->
-      <div class="section-card bg-white rounded-xl p-6 shadow-lg cursor-pointer" onclick="showSection('reading')">
+      <div class="section-card bg-white rounded-xl p-4 sm:p-6 shadow-lg cursor-pointer" onclick="showSection('reading')">
        <div class="text-center">
-        <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center">
-         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        <div class="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 rounded-full flex items-center justify-center">
+         <svg class="w-6 h-6 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
          </svg>
         </div>
-        <h3 class="text-xl font-semibold mb-2" id="reading-title">Đọc hiểu</h3>
-        <p class="text-gray-600 mb-4">Luyện tập kỹ năng đọc hiểu</p>
+        <h3 class="text-lg sm:text-xl font-semibold mb-2" id="reading-title">Đọc hiểu</h3>
+        <p class="text-sm sm:text-base text-gray-600 mb-2 sm:mb-4">Luyện tập kỹ năng đọc hiểu</p>
        </div>
       </div><!-- Grammar Section -->
-      <div class="section-card bg-white rounded-xl p-6 shadow-lg cursor-pointer" onclick="showSection('grammar')">
+      <div class="section-card bg-white rounded-xl p-4 sm:p-6 shadow-lg cursor-pointer sm:col-span-2 lg:col-span-1" onclick="showSection('grammar')">
        <div class="text-center">
-        <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center">
-         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+        <div class="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 rounded-full flex items-center justify-center">
+         <svg class="w-6 h-6 sm:w-8 sm:h-8" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
          </svg>
         </div>
-        <h3 class="text-xl font-semibold mb-2" id="grammar-title">Ngữ pháp</h3>
-        <p class="text-gray-600 mb-4">Luyện tập ngữ pháp tiếng Anh</p>
+        <h3 class="text-lg sm:text-xl font-semibold mb-2" id="grammar-title">Ngữ pháp</h3>
+        <p class="text-sm sm:text-base text-gray-600 mb-2 sm:mb-4">Luyện tập ngữ pháp tiếng Anh</p>
        </div>
       </div>
      </div>
     </div><!-- Vocabulary Section -->
     <div id="vocabulary-section" class="hidden">
-     <div class="bg-white rounded-xl p-8 shadow-lg">
-      <div class="flex justify-between items-center mb-8">
-       <div>
-        <h2 class="text-3xl font-bold text-gray-800">Thẻ ghi nhớ từ vựng</h2>
-        <p class="text-gray-600 mt-2">Học 57 từ vựng về Global Warming &amp; Ecosystems</p>
-       </div><button onclick="showSection('home')" class="text-gray-500 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100 transition-all">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+     <div class="bg-white rounded-xl p-4 sm:p-6 lg:p-8 shadow-lg">
+      <div class="flex justify-between items-start sm:items-center mb-6 sm:mb-8">
+       <div class="flex-1 pr-4">
+        <h2 class="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800">Thẻ ghi nhớ từ vựng</h2>
+        <p class="text-sm sm:text-base text-gray-600 mt-1 sm:mt-2">Học 57 từ vựng về Global Warming &amp; Ecosystems</p>
+       </div><button onclick="showSection('home')" class="text-gray-500 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100 transition-all flex-shrink-0">
+        <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg></button>
       </div><!-- Progress Section -->
-      <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 mb-8">
-       <div class="flex justify-between items-center mb-3"><span class="text-lg font-semibold text-gray-700">Tiến độ học tập</span> <span class="text-2xl font-bold text-blue-600"><span id="current-card">1</span> / <span id="total-cards">54</span></span>
+      <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-4 sm:p-6 mb-6 sm:mb-8">
+       <div class="flex justify-between items-center mb-3"><span class="text-base sm:text-lg font-semibold text-gray-700">Tiến độ học tập</span> <span class="text-xl sm:text-2xl font-bold text-blue-600"><span id="current-card">1</span> / <span id="total-cards">54</span></span>
        </div>
-       <div class="w-full bg-white rounded-full h-3 shadow-inner">
-        <div class="bg-gradient-to-r from-blue-500 to-purple-600 h-3 rounded-full transition-all duration-500 shadow-sm" id="vocab-progress" style="width: 1.85%"></div>
+       <div class="w-full bg-white rounded-full h-2 sm:h-3 shadow-inner">
+        <div class="bg-gradient-to-r from-blue-500 to-purple-600 h-2 sm:h-3 rounded-full transition-all duration-500 shadow-sm" id="vocab-progress" style="width: 1.85%"></div>
        </div>
-       <div class="flex justify-between text-sm text-gray-600 mt-2"><span>Bắt đầu học</span> <span>Hoàn thành</span>
+       <div class="flex justify-between text-xs sm:text-sm text-gray-600 mt-2"><span>Bắt đầu học</span> <span>Hoàn thành</span>
        </div>
       </div><!-- Flashcard Container -->
-      <div class="max-w-lg mx-auto">
-       <div class="flip-card flashcard mb-6" id="flashcard">
+      <div class="max-w-sm sm:max-w-md lg:max-w-lg mx-auto">
+       <div class="flip-card flashcard mb-4 sm:mb-6" id="flashcard">
         <div class="flip-card-inner relative w-full"><!-- Front of card -->
-         <div class="flip-card-front absolute inset-0 bg-blue-600 text-white rounded-xl shadow-lg" style="min-height: 220px;">
-          <div class="p-4 h-full flex flex-col justify-center items-center text-center"><!-- Word -->
-           <div class="mb-4">
-            <h3 class="text-3xl font-bold mb-3" id="vocab-word">grassland</h3>
-            <p class="text-base mb-2 font-mono" id="vocab-ipa">/ˈɡrɑːslænd/</p>
-            <p class="text-sm opacity-90" id="vocab-type">noun</p>
-           </div><!-- Pronunciation button --> <button class="bg-white/20 hover:bg-white/30 rounded-full p-2 transition-all duration-300 mb-4" id="pronounce-btn" onclick="pronounceWord()">
-            <svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+         <div class="flip-card-front absolute inset-0 bg-blue-600 text-white rounded-xl shadow-lg" style="min-height: 200px;">
+          <div class="p-3 sm:p-4 h-full flex flex-col justify-center items-center text-center"><!-- Word -->
+           <div class="mb-3 sm:mb-4">
+            <h3 class="text-2xl sm:text-3xl font-bold mb-2 sm:mb-3" id="vocab-word">grassland</h3>
+            <p class="text-sm sm:text-base mb-1 sm:mb-2 font-mono" id="vocab-ipa">/ˈɡrɑːslænd/</p>
+            <p class="text-xs sm:text-sm opacity-90" id="vocab-type">noun</p>
+           </div><!-- Pronunciation button --> <button class="bg-white/20 hover:bg-white/30 rounded-full p-2 transition-all duration-300 mb-3 sm:mb-4" id="pronounce-btn" onclick="pronounceWord()">
+            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
             </svg></button> <!-- Instruction -->
            <p class="text-xs opacity-80">Nhấn để xem nghĩa</p>
           </div>
          </div><!-- Back of card -->
-         <div class="flip-card-back absolute inset-0 bg-green-600 text-white rounded-xl shadow-lg" style="min-height: 220px;">
-          <div class="p-4 h-full flex flex-col justify-center"><!-- Word (smaller on back) -->
-           <div class="text-center mb-4">
-            <h3 class="text-xl font-bold" id="vocab-word-back">grassland</h3>
+         <div class="flip-card-back absolute inset-0 bg-green-600 text-white rounded-xl shadow-lg" style="min-height: 200px;">
+          <div class="p-3 sm:p-4 h-full flex flex-col justify-center"><!-- Word (smaller on back) -->
+           <div class="text-center mb-3 sm:mb-4">
+            <h3 class="text-lg sm:text-xl font-bold" id="vocab-word-back">grassland</h3>
             <p class="text-xs opacity-90" id="vocab-type-back">noun</p>
            </div><!-- Definition -->
-           <div class="mb-4 bg-white/10 rounded-lg p-3">
-            <p class="text-sm leading-relaxed" id="vocab-definition">Vùng đất rộng lớn được bao phủ bởi cỏ</p>
+           <div class="mb-3 sm:mb-4 bg-white/10 rounded-lg p-2 sm:p-3">
+            <p class="text-xs sm:text-sm leading-relaxed" id="vocab-definition">Vùng đất rộng lớn được bao phủ bởi cỏ</p>
            </div><!-- Example -->
-           <div class="bg-white/10 rounded-lg p-3">
-            <p class="text-sm italic leading-relaxed" id="vocab-example">The African grasslands are home to many wild animals.</p>
+           <div class="bg-white/10 rounded-lg p-2 sm:p-3">
+            <p class="text-xs sm:text-sm italic leading-relaxed" id="vocab-example">The African grasslands are home to many wild animals.</p>
            </div>
           </div>
          </div>
         </div>
        </div><!-- Control Buttons -->
-       <div class="flex justify-between items-center"><button id="prev-card" class="flex items-center space-x-2 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-md" disabled>
-         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="15 19l-7-7 7-7" />
-         </svg><span class="font-medium">Trước</span> </button> <button id="start-vocab-quiz" class="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg hover:from-orange-600 hover:to-red-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
-         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-         </svg><span class="font-bold">Kiểm tra từ vựng</span> </button> <button id="next-card" class="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"> <span class="font-medium">Tiếp</span>
-         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="9 5l7 7-7 7" />
-         </svg></button>
+       <div class="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-0"><!-- Navigation buttons for mobile/tablet -->
+        <div class="flex justify-between w-full sm:w-auto sm:justify-start gap-4"><button id="prev-card" class="flex items-center space-x-1 sm:space-x-2 px-3 sm:px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-md" disabled>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="15 19l-7-7 7-7" />
+          </svg><span class="font-medium text-sm sm:text-base">Trước</span> </button> <button id="next-card" class="flex items-center space-x-1 sm:space-x-2 px-3 sm:px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"> <span class="font-medium text-sm sm:text-base">Tiếp</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="9 5l7 7-7 7" />
+          </svg></button>
+        </div><!-- Quiz button - full width on mobile --> <button id="start-vocab-quiz" class="w-full sm:w-auto flex items-center justify-center space-x-2 px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg hover:from-orange-600 hover:to-red-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+         <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+         </svg><span class="font-bold text-sm sm:text-base">Kiểm tra từ vựng</span> </button>
        </div><!-- Vocabulary Quiz Section -->
        <div id="vocab-quiz-section" class="hidden mt-12 bg-gradient-to-br from-orange-50 to-red-50 rounded-xl p-8 shadow-lg border-2 border-orange-200">
         <div class="text-center mb-8">
@@ -366,15 +392,15 @@
      </div>
     </div><!-- Reading Section -->
     <div id="reading-section" class="hidden">
-     <div class="bg-white rounded-xl p-6 shadow-lg">
-      <div class="flex justify-between items-center mb-6">
-       <h2 class="text-2xl font-bold">Bài đọc hiểu</h2><button onclick="showSection('home')" class="text-gray-600 hover:text-gray-800">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+     <div class="bg-white rounded-xl p-4 sm:p-6 shadow-lg">
+      <div class="flex justify-between items-center mb-4 sm:mb-6">
+       <h2 class="text-xl sm:text-2xl font-bold">Bài đọc hiểu</h2><button onclick="showSection('home')" class="text-gray-600 hover:text-gray-800 p-2 rounded-full hover:bg-gray-100 transition-all">
+        <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg></button>
       </div>
-      <div class="prose max-w-none mb-8">
-       <h3 class="text-xl font-semibold mb-4">Climate Change and Our Planet's Future</h3>
-       <p class="text-gray-700 leading-relaxed mb-4"><span class="vocab-highlight" data-word="global warming">Global warming</span> is one of the most serious challenges facing our planet today. Rising <span class="vocab-highlight" data-word="temperature">temperatures</span> around the world are causing <span class="vocab-highlight" data-word="extreme weather">extreme weather</span> events such as powerful <span class="vocab-highlight" data-word="hurricane">hurricanes</span>, devastating <span class="vocab-highlight" data-word="wildfire">wildfires</span>, and severe <span class="vocab-highlight" data-word="drought">droughts</span>. These changes significantly <span class="vocab-highlight" data-word="affect">affect</span> every <span class="vocab-highlight" data-word="ecosystem">ecosystem</span> on Earth.</p>
+      <div class="prose prose-sm sm:prose max-w-none mb-6 sm:mb-8">
+       <h3 class="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">Climate Change and Our Planet's Future</h3>
+       <p class="text-sm sm:text-base text-gray-700 leading-relaxed mb-3 sm:mb-4"><span class="vocab-highlight" data-word="global warming">Global warming</span> is one of the most serious challenges facing our planet today. Rising <span class="vocab-highlight" data-word="temperature">temperatures</span> around the world are causing <span class="vocab-highlight" data-word="extreme weather">extreme weather</span> events such as powerful <span class="vocab-highlight" data-word="hurricane">hurricanes</span>, devastating <span class="vocab-highlight" data-word="wildfire">wildfires</span>, and severe <span class="vocab-highlight" data-word="drought">droughts</span>. These changes significantly <span class="vocab-highlight" data-word="affect">affect</span> every <span class="vocab-highlight" data-word="ecosystem">ecosystem</span> on Earth.</p>
        <p class="text-gray-700 leading-relaxed mb-4">The main cause is <span class="vocab-highlight" data-word="greenhouse gas">greenhouse gas</span> <span class="vocab-highlight" data-word="emission">emissions</span> that cars and factories <span class="vocab-highlight" data-word="emit">emit</span> into the atmosphere. The polar <span class="vocab-highlight" data-word="ice cap">ice caps</span> are melting rapidly, causing dangerous <span class="vocab-highlight" data-word="flood">floods</span> in coastal areas. Many animal species in <span class="vocab-highlight" data-word="grassland">grasslands</span>, <span class="vocab-highlight" data-word="desert">deserts</span>, and <span class="vocab-highlight" data-word="marine">marine</span> environments face <span class="vocab-highlight" data-word="extinction">extinction</span> due to habitat <span class="vocab-highlight" data-word="loss">loss</span>.</p>
        <p class="text-gray-700 leading-relaxed">However, we can take action to reduce this crisis. We must <span class="vocab-highlight" data-word="recycle">recycle</span> materials, use <span class="vocab-highlight" data-word="reusable">reusable</span> products, and choose <span class="vocab-highlight" data-word="organic">organic</span> foods when possible. <span class="vocab-highlight" data-word="determined">Determined</span> individuals and <span class="vocab-highlight" data-word="inventive">inventive</span> scientists are working together to develop <span class="vocab-highlight" data-word="effective">effective</span> solutions. If we <span class="vocab-highlight" data-word="care">care</span> for our planet and act responsibly, we can create a sustainable future for generations to come.</p>
       </div>
@@ -386,19 +412,19 @@
      </div>
     </div><!-- Grammar Section -->
     <div id="grammar-section" class="hidden">
-     <div class="bg-white rounded-xl p-6 shadow-lg">
-      <div class="flex justify-between items-center mb-6">
-       <h2 class="text-2xl font-bold">Ngữ pháp</h2><button onclick="showSection('home')" class="text-gray-600 hover:text-gray-800">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+     <div class="bg-white rounded-xl p-4 sm:p-6 shadow-lg">
+      <div class="flex justify-between items-center mb-4 sm:mb-6">
+       <h2 class="text-xl sm:text-2xl font-bold">Ngữ pháp</h2><button onclick="showSection('home')" class="text-gray-600 hover:text-gray-800 p-2 rounded-full hover:bg-gray-100 transition-all">
+        <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg></button>
       </div><!-- Grammar Navigation -->
-      <div class="flex justify-center mb-8">
-       <div class="flex space-x-2 bg-gray-100 rounded-lg p-1"><button id="theory-tab" class="px-4 py-2 rounded-md bg-purple-600 text-white font-medium transition-all" onclick="showGrammarTab('theory')"> 📚 Lý thuyết </button> <button id="practice-tab" class="px-4 py-2 rounded-md text-gray-600 hover:text-gray-800 font-medium transition-all" onclick="showGrammarTab('practice')"> ✏️ Bài tập </button>
+      <div class="flex justify-center mb-6 sm:mb-8">
+       <div class="flex w-full sm:w-auto space-x-1 sm:space-x-2 bg-gray-100 rounded-lg p-1"><button id="theory-tab" class="flex-1 sm:flex-none px-3 sm:px-4 py-2 rounded-md bg-purple-600 text-white font-medium transition-all text-sm sm:text-base" onclick="showGrammarTab('theory')"> 📚 Lý thuyết </button> <button id="practice-tab" class="flex-1 sm:flex-none px-3 sm:px-4 py-2 rounded-md text-gray-600 hover:text-gray-800 font-medium transition-all text-sm sm:text-base" onclick="showGrammarTab('practice')"> ✏️ Bài tập </button>
        </div>
       </div><!-- Grammar Theory Section -->
-      <div id="grammar-theory" class="space-y-8"><!-- Present Perfect -->
-       <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border-l-4 border-blue-500">
-        <h3 class="text-xl font-bold text-blue-800 mb-4">🔵 Present Perfect Tense</h3>
+      <div id="grammar-theory" class="space-y-6 sm:space-y-8"><!-- Present Perfect -->
+       <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 sm:p-6 border-l-4 border-blue-500">
+        <h3 class="text-lg sm:text-xl font-bold text-blue-800 mb-3 sm:mb-4">🔵 Present Perfect Tense</h3>
         <div class="space-y-4">
          <div>
           <h4 class="font-semibold text-blue-700 mb-2">Cấu trúc:</h4>
@@ -582,32 +608,32 @@
      </div>
     </div><!-- Vocabulary Definition Modal -->
     <div id="vocab-modal" class="modal">
-     <div class="bg-white rounded-xl p-6 max-w-md mx-4 shadow-2xl">
-      <div class="flex justify-between items-center mb-4">
-       <div>
-        <h3 class="text-xl font-bold" id="modal-word">Word</h3>
-        <p class="text-sm text-gray-500" id="modal-ipa">/ˈfəʊnətɪks/</p>
+     <div class="bg-white rounded-xl p-4 sm:p-6 max-w-sm sm:max-w-md mx-4 shadow-2xl">
+      <div class="flex justify-between items-start mb-4">
+       <div class="flex-1 pr-4">
+        <h3 class="text-lg sm:text-xl font-bold" id="modal-word">Word</h3>
+        <p class="text-xs sm:text-sm text-gray-500" id="modal-ipa">/ˈfəʊnətɪks/</p>
        </div>
-       <div class="flex items-center space-x-2"><button onclick="pronounceModalWord()" class="text-blue-600 hover:text-blue-800 p-2 rounded-full hover:bg-blue-50 transition-all">
-         <svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
-         </svg></button> <button onclick="closeVocabModal()" class="text-gray-500 hover:text-gray-700">
-         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+       <div class="flex items-center space-x-1 sm:space-x-2 flex-shrink-0"><button onclick="pronounceModalWord()" class="text-blue-600 hover:text-blue-800 p-1 sm:p-2 rounded-full hover:bg-blue-50 transition-all">
+         <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+         </svg></button> <button onclick="closeVocabModal()" class="text-gray-500 hover:text-gray-700 p-1 sm:p-2">
+         <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
          </svg></button>
        </div>
       </div>
       <div class="space-y-3">
        <div>
-        <h4 class="font-semibold text-gray-700">Definition:</h4>
-        <p id="modal-definition" class="text-gray-600">Definition here</p>
+        <h4 class="font-semibold text-gray-700 text-sm sm:text-base">Definition:</h4>
+        <p id="modal-definition" class="text-gray-600 text-sm sm:text-base">Definition here</p>
        </div>
        <div>
-        <h4 class="font-semibold text-gray-700">Example:</h4>
-        <p id="modal-example" class="text-gray-600 italic">Example here</p>
+        <h4 class="font-semibold text-gray-700 text-sm sm:text-base">Example:</h4>
+        <p id="modal-example" class="text-gray-600 italic text-sm sm:text-base">Example here</p>
        </div>
       </div>
      </div>
     </div><!-- Toast Notification -->
-    <div id="toast" class="toast"><span id="toast-message">Success!</span>
+    <div id="toast" class="toast"><span id="toast-message" class="text-sm sm:text-base">Success!</span>
     </div>
    </div>
   </main>
@@ -2134,5 +2160,5 @@
             initializeApp();
         });
     </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'995b5972f71993d2',t:'MTc2MTY2NDExNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'995b8d2b32c6fd3f',t:'MTc2MTY2NjIzNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
