@@ -1,0 +1,2138 @@
+<!doctype html>
+<html lang="vi">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>English Learning - Unit 3</title>
+  <script src="/_sdk/data_sdk.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+        body {
+            box-sizing: border-box;
+            height: 100%;
+        }
+        html {
+            height: 100%;
+        }
+        .flip-card {
+            perspective: 1000px;
+        }
+        .flip-card-inner {
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        .flip-card-front, .flip-card-back {
+            backface-visibility: hidden;
+        }
+        .flip-card-back {
+            transform: rotateY(180deg);
+        }
+        .progress-bar {
+            transition: width 0.3s ease;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .flashcard {
+            min-height: 200px;
+            cursor: pointer;
+        }
+        .grammar-option {
+            transition: all 0.2s ease;
+        }
+        .grammar-option:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .grammar-option.correct {
+            background-color: #10b981;
+            color: white;
+        }
+        .grammar-option.incorrect {
+            background-color: #ef4444;
+            color: white;
+        }
+        .vocab-highlight {
+            background-color: #fef3c7;
+            color: #92400e;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-bottom: 2px solid #f59e0b;
+        }
+        .vocab-highlight:hover {
+            background-color: #fde68a;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .vocab-highlight.learned {
+            background-color: #fef08a;
+            color: #a16207;
+            border-bottom: 2px solid #eab308;
+            animation: pulse-yellow 2s infinite;
+        }
+        @keyframes pulse-yellow {
+            0%, 100% { background-color: #fef08a; }
+            50% { background-color: #fde047; }
+        }
+        .vocab-quiz-option.correct {
+            background-color: #10b981;
+            color: white;
+            border-color: #059669;
+        }
+        .vocab-quiz-option.incorrect {
+            background-color: #ef4444;
+            color: white;
+            border-color: #dc2626;
+        }
+        .vocab-quiz-option {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .vocab-quiz-option:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .sound-effect {
+            animation: soundWave 0.6s ease-in-out;
+        }
+        @keyframes soundWave {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.05); }
+            50% { transform: scale(1.1); }
+            75% { transform: scale(1.05); }
+        }
+        .correct-answer {
+            animation: correctPulse 1s ease-in-out;
+        }
+        @keyframes correctPulse {
+            0% { transform: scale(1); background-color: #10b981; }
+            50% { transform: scale(1.05); background-color: #059669; }
+            100% { transform: scale(1); background-color: #10b981; }
+        }
+        .wrong-answer {
+            animation: wrongShake 0.6s ease-in-out;
+        }
+        @keyframes wrongShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        .reading-quiz-option.correct {
+            background-color: #10b981;
+            color: white;
+            border-color: #059669;
+        }
+        .reading-quiz-option.incorrect {
+            background-color: #ef4444;
+            color: white;
+            border-color: #dc2626;
+        }
+        .section-card {
+            transition: all 0.3s ease;
+        }
+        .section-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1001;
+        }
+        .toast.show {
+            transform: translateX(0);
+        }
+        .loading-spinner {
+            border: 3px solid #f3f4f6;
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+  <style>@view-transition { navigation: auto; }</style>
+ </head>
+ <body class="min-h-full"><!-- Home Button - Fixed Position --> <button id="home-button" onclick="showSection('home')" class="fixed top-4 left-4 z-50 bg-white hover:bg-gray-50 text-gray-700 hover:text-gray-900 p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200">
+   <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-7a1 1 0 011-1h2a1 1 0 011 1v7a1 1 0 001 1m-6 0h6" />
+   </svg></button>
+  <main class="min-h-full p-6" id="main-content">
+   <div class="max-w-4xl mx-auto"><!-- Home Screen -->
+    <div id="home-screen" class="space-y-8"><!-- Header -->
+     <div class="text-center relative"><!-- Home button next to title --> <button onclick="showSection('home')" class="absolute left-0 top-0 bg-white hover:bg-gray-50 text-gray-700 hover:text-gray-900 p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200">
+       <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-7a1 1 0 011-1h2a1 1 0 011 1v7a1 1 0 001 1m-6 0h6" />
+       </svg></button>
+      <h1 class="text-4xl font-bold mb-4" id="unit-title">Unit 3: Global Warming &amp; Ecosystems</h1>
+      <p class="text-lg text-gray-600" id="welcome-message">Chào mừng bạn đến với bài học tiếng Anh cùng Mega Master 11 nhé!</p>
+     </div><!-- Progress Section -->
+     <div class="bg-white rounded-lg p-6 shadow-md">
+      <div class="flex justify-between items-center mb-4">
+       <h2 class="text-xl font-semibold">Tiến độ học tập</h2><span class="text-lg font-bold" id="progress-text">0%</span>
+      </div><!-- Overall Progress Bar -->
+      <div class="mb-6">
+       <div class="flex justify-between items-center mb-2"><span class="text-sm font-medium">Tiến độ tổng thể</span> <span class="text-sm text-gray-600" id="overall-percentage">0%</span>
+       </div>
+       <div class="w-full bg-gray-200 rounded-full h-3">
+        <div class="progress-bar h-3 rounded-full" id="progress-bar" style="width: 0%"></div>
+       </div>
+      </div><!-- Individual Section Progress -->
+      <div class="grid md:grid-cols-3 gap-4"><!-- Vocabulary Progress -->
+       <div class="text-center">
+        <div class="mb-2">
+         <svg class="w-8 h-8 mx-auto mb-2 text-blue-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+         </svg>
+         <h3 class="font-semibold text-sm">Từ vựng</h3>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-2 mb-1">
+         <div class="bg-blue-600 h-2 rounded-full transition-all duration-300" id="vocab-progress-home" style="width: 0%"></div>
+        </div><span class="text-xs text-gray-600" id="vocab-progress-text"></span>
+       </div><!-- Reading Progress -->
+       <div class="text-center">
+        <div class="mb-2">
+         <svg class="w-8 h-8 mx-auto mb-2 text-green-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+         </svg>
+         <h3 class="font-semibold text-sm">Đọc hiểu</h3>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-2 mb-1">
+         <div class="bg-green-600 h-2 rounded-full transition-all duration-300" id="reading-progress-home" style="width: 0%"></div>
+        </div><span class="text-xs text-gray-600" id="reading-progress-text">0/5 câu</span>
+       </div><!-- Grammar Progress -->
+       <div class="text-center">
+        <div class="mb-2">
+         <svg class="w-8 h-8 mx-auto mb-2 text-purple-600" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+         </svg>
+         <h3 class="font-semibold text-sm">Ngữ pháp</h3>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-2 mb-1">
+         <div class="bg-purple-600 h-2 rounded-full transition-all duration-300" id="grammar-progress-home" style="width: 0%"></div>
+        </div><span class="text-xs text-gray-600" id="grammar-progress-text">0/30 câu</span>
+       </div>
+      </div>
+     </div><!-- Learning Sections -->
+     <div class="grid md:grid-cols-3 gap-6"><!-- Vocabulary Section -->
+      <div class="section-card bg-white rounded-xl p-6 shadow-lg cursor-pointer" onclick="showSection('vocabulary')">
+       <div class="text-center">
+        <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center">
+         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+         </svg>
+        </div>
+        <h3 class="text-xl font-semibold mb-2" id="vocab-title">Từ vựng</h3>
+        <p class="text-gray-600 mb-4">Học từ mới với thẻ ghi nhớ tương tác</p>
+       </div>
+      </div><!-- Reading Section -->
+      <div class="section-card bg-white rounded-xl p-6 shadow-lg cursor-pointer" onclick="showSection('reading')">
+       <div class="text-center">
+        <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center">
+         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+         </svg>
+        </div>
+        <h3 class="text-xl font-semibold mb-2" id="reading-title">Đọc hiểu</h3>
+        <p class="text-gray-600 mb-4">Luyện tập kỹ năng đọc hiểu</p>
+       </div>
+      </div><!-- Grammar Section -->
+      <div class="section-card bg-white rounded-xl p-6 shadow-lg cursor-pointer" onclick="showSection('grammar')">
+       <div class="text-center">
+        <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center">
+         <svg class="w-8 h-8" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+         </svg>
+        </div>
+        <h3 class="text-xl font-semibold mb-2" id="grammar-title">Ngữ pháp</h3>
+        <p class="text-gray-600 mb-4">Luyện tập ngữ pháp tiếng Anh</p>
+       </div>
+      </div>
+     </div>
+    </div><!-- Vocabulary Section -->
+    <div id="vocabulary-section" class="hidden">
+     <div class="bg-white rounded-xl p-8 shadow-lg">
+      <div class="flex justify-between items-center mb-8">
+       <div>
+        <h2 class="text-3xl font-bold text-gray-800">Thẻ ghi nhớ từ vựng</h2>
+        <p class="text-gray-600 mt-2">Học 57 từ vựng về Global Warming &amp; Ecosystems</p>
+       </div><button onclick="showSection('home')" class="text-gray-500 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100 transition-all">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg></button>
+      </div><!-- Progress Section -->
+      <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 mb-8">
+       <div class="flex justify-between items-center mb-3"><span class="text-lg font-semibold text-gray-700">Tiến độ học tập</span> <span class="text-2xl font-bold text-blue-600"><span id="current-card">1</span> / <span id="total-cards">54</span></span>
+       </div>
+       <div class="w-full bg-white rounded-full h-3 shadow-inner">
+        <div class="bg-gradient-to-r from-blue-500 to-purple-600 h-3 rounded-full transition-all duration-500 shadow-sm" id="vocab-progress" style="width: 1.85%"></div>
+       </div>
+       <div class="flex justify-between text-sm text-gray-600 mt-2"><span>Bắt đầu học</span> <span>Hoàn thành</span>
+       </div>
+      </div><!-- Flashcard Container -->
+      <div class="max-w-lg mx-auto">
+       <div class="flip-card flashcard mb-6" id="flashcard">
+        <div class="flip-card-inner relative w-full"><!-- Front of card -->
+         <div class="flip-card-front absolute inset-0 bg-blue-600 text-white rounded-xl shadow-lg" style="min-height: 220px;">
+          <div class="p-4 h-full flex flex-col justify-center items-center text-center"><!-- Word -->
+           <div class="mb-4">
+            <h3 class="text-3xl font-bold mb-3" id="vocab-word">grassland</h3>
+            <p class="text-base mb-2 font-mono" id="vocab-ipa">/ˈɡrɑːslænd/</p>
+            <p class="text-sm opacity-90" id="vocab-type">noun</p>
+           </div><!-- Pronunciation button --> <button class="bg-white/20 hover:bg-white/30 rounded-full p-2 transition-all duration-300 mb-4" id="pronounce-btn" onclick="pronounceWord()">
+            <svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+            </svg></button> <!-- Instruction -->
+           <p class="text-xs opacity-80">Nhấn để xem nghĩa</p>
+          </div>
+         </div><!-- Back of card -->
+         <div class="flip-card-back absolute inset-0 bg-green-600 text-white rounded-xl shadow-lg" style="min-height: 220px;">
+          <div class="p-4 h-full flex flex-col justify-center"><!-- Word (smaller on back) -->
+           <div class="text-center mb-4">
+            <h3 class="text-xl font-bold" id="vocab-word-back">grassland</h3>
+            <p class="text-xs opacity-90" id="vocab-type-back">noun</p>
+           </div><!-- Definition -->
+           <div class="mb-4 bg-white/10 rounded-lg p-3">
+            <p class="text-sm leading-relaxed" id="vocab-definition">Vùng đất rộng lớn được bao phủ bởi cỏ</p>
+           </div><!-- Example -->
+           <div class="bg-white/10 rounded-lg p-3">
+            <p class="text-sm italic leading-relaxed" id="vocab-example">The African grasslands are home to many wild animals.</p>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div><!-- Control Buttons -->
+       <div class="flex justify-between items-center"><button id="prev-card" class="flex items-center space-x-2 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-md" disabled>
+         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="15 19l-7-7 7-7" />
+         </svg><span class="font-medium">Trước</span> </button> <button id="start-vocab-quiz" class="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg hover:from-orange-600 hover:to-red-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+         </svg><span class="font-bold">Kiểm tra từ vựng</span> </button> <button id="next-card" class="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"> <span class="font-medium">Tiếp</span>
+         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="9 5l7 7-7 7" />
+         </svg></button>
+       </div><!-- Vocabulary Quiz Section -->
+       <div id="vocab-quiz-section" class="hidden mt-12 bg-gradient-to-br from-orange-50 to-red-50 rounded-xl p-8 shadow-lg border-2 border-orange-200">
+        <div class="text-center mb-8">
+         <h3 class="text-3xl font-bold text-orange-800 mb-2">🎯 Kiểm tra từ vựng</h3>
+         <p class="text-orange-600">57 câu hỏi trắc nghiệm từ vựng được xáo trộn ngẫu nhiên</p>
+        </div><!-- Quiz Progress -->
+        <div class="mb-8">
+         <div class="flex justify-between items-center mb-3"><span class="text-lg font-semibold text-orange-700">Câu hỏi <span id="current-vocab-quiz">1</span> / 57</span> <span class="text-lg font-bold text-orange-800">Điểm: <span id="vocab-quiz-score">0</span></span>
+         </div>
+         <div class="w-full bg-white rounded-full h-4 shadow-inner">
+          <div class="bg-gradient-to-r from-orange-500 to-red-500 h-4 rounded-full transition-all duration-500" id="vocab-quiz-progress" style="width: 1.85%"></div>
+         </div>
+        </div><!-- Quiz Question -->
+        <div id="vocab-quiz-container" class="max-w-3xl mx-auto"><!-- Questions will be generated here -->
+        </div><!-- Quiz Navigation -->
+        <div class="flex justify-center mt-8"><button id="vocab-quiz-next" class="px-8 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg hover:from-orange-600 hover:to-red-600 transition-all duration-300 shadow-lg disabled:bg-gray-300 disabled:cursor-not-allowed font-bold" disabled> Câu tiếp theo </button>
+        </div><!-- Quiz Results -->
+        <div id="vocab-quiz-results" class="hidden text-center mt-8">
+         <div class="bg-white rounded-xl p-8 shadow-lg">
+          <h3 class="text-3xl font-bold mb-4 text-orange-800">🎉 Hoàn thành bài kiểm tra!</h3>
+          <div class="text-6xl font-bold mb-4" id="vocab-final-score">
+           0/57
+          </div>
+          <div class="text-2xl mb-6" id="vocab-percentage">
+           0%
+          </div>
+          <p class="text-lg text-gray-600 mb-8" id="vocab-quiz-feedback">Tuyệt vời!</p>
+          <div class="flex justify-center space-x-4"><button onclick="restartVocabQuiz()" class="px-6 py-3 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors font-bold"> 🔄 Làm lại </button> <button onclick="hideVocabQuiz()" class="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors font-bold"> 📚 Tiếp tục học </button>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div><!-- Reading Section -->
+    <div id="reading-section" class="hidden">
+     <div class="bg-white rounded-xl p-6 shadow-lg">
+      <div class="flex justify-between items-center mb-6">
+       <h2 class="text-2xl font-bold">Bài đọc hiểu</h2><button onclick="showSection('home')" class="text-gray-600 hover:text-gray-800">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg></button>
+      </div>
+      <div class="prose max-w-none mb-8">
+       <h3 class="text-xl font-semibold mb-4">Climate Change and Our Planet's Future</h3>
+       <p class="text-gray-700 leading-relaxed mb-4"><span class="vocab-highlight" data-word="global warming">Global warming</span> is one of the most serious challenges facing our planet today. Rising <span class="vocab-highlight" data-word="temperature">temperatures</span> around the world are causing <span class="vocab-highlight" data-word="extreme weather">extreme weather</span> events such as powerful <span class="vocab-highlight" data-word="hurricane">hurricanes</span>, devastating <span class="vocab-highlight" data-word="wildfire">wildfires</span>, and severe <span class="vocab-highlight" data-word="drought">droughts</span>. These changes significantly <span class="vocab-highlight" data-word="affect">affect</span> every <span class="vocab-highlight" data-word="ecosystem">ecosystem</span> on Earth.</p>
+       <p class="text-gray-700 leading-relaxed mb-4">The main cause is <span class="vocab-highlight" data-word="greenhouse gas">greenhouse gas</span> <span class="vocab-highlight" data-word="emission">emissions</span> that cars and factories <span class="vocab-highlight" data-word="emit">emit</span> into the atmosphere. The polar <span class="vocab-highlight" data-word="ice cap">ice caps</span> are melting rapidly, causing dangerous <span class="vocab-highlight" data-word="flood">floods</span> in coastal areas. Many animal species in <span class="vocab-highlight" data-word="grassland">grasslands</span>, <span class="vocab-highlight" data-word="desert">deserts</span>, and <span class="vocab-highlight" data-word="marine">marine</span> environments face <span class="vocab-highlight" data-word="extinction">extinction</span> due to habitat <span class="vocab-highlight" data-word="loss">loss</span>.</p>
+       <p class="text-gray-700 leading-relaxed">However, we can take action to reduce this crisis. We must <span class="vocab-highlight" data-word="recycle">recycle</span> materials, use <span class="vocab-highlight" data-word="reusable">reusable</span> products, and choose <span class="vocab-highlight" data-word="organic">organic</span> foods when possible. <span class="vocab-highlight" data-word="determined">Determined</span> individuals and <span class="vocab-highlight" data-word="inventive">inventive</span> scientists are working together to develop <span class="vocab-highlight" data-word="effective">effective</span> solutions. If we <span class="vocab-highlight" data-word="care">care</span> for our planet and act responsibly, we can create a sustainable future for generations to come.</p>
+      </div>
+      <div class="border-t pt-6">
+       <h4 class="text-lg font-semibold mb-4">Comprehension Questions</h4>
+       <div id="reading-quiz" class="space-y-4"><!-- Questions will be generated here -->
+       </div><button id="check-reading" class="mt-6 px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">Check Answers</button>
+      </div>
+     </div>
+    </div><!-- Grammar Section -->
+    <div id="grammar-section" class="hidden">
+     <div class="bg-white rounded-xl p-6 shadow-lg">
+      <div class="flex justify-between items-center mb-6">
+       <h2 class="text-2xl font-bold">Ngữ pháp</h2><button onclick="showSection('home')" class="text-gray-600 hover:text-gray-800">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg></button>
+      </div><!-- Grammar Navigation -->
+      <div class="flex justify-center mb-8">
+       <div class="flex space-x-2 bg-gray-100 rounded-lg p-1"><button id="theory-tab" class="px-4 py-2 rounded-md bg-purple-600 text-white font-medium transition-all" onclick="showGrammarTab('theory')"> 📚 Lý thuyết </button> <button id="practice-tab" class="px-4 py-2 rounded-md text-gray-600 hover:text-gray-800 font-medium transition-all" onclick="showGrammarTab('practice')"> ✏️ Bài tập </button>
+       </div>
+      </div><!-- Grammar Theory Section -->
+      <div id="grammar-theory" class="space-y-8"><!-- Present Perfect -->
+       <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border-l-4 border-blue-500">
+        <h3 class="text-xl font-bold text-blue-800 mb-4">🔵 Present Perfect Tense</h3>
+        <div class="space-y-4">
+         <div>
+          <h4 class="font-semibold text-blue-700 mb-2">Cấu trúc:</h4>
+          <div class="bg-white rounded-lg p-3 border border-blue-200">
+           <p class="font-mono text-blue-600"><strong>S + have/has + V3/Ved</strong></p>
+          </div>
+         </div>
+         <div>
+          <h4 class="font-semibold text-blue-700 mb-2">Cách dùng:</h4>
+          <ul class="list-disc list-inside space-y-1 text-gray-700">
+           <li>Hành động xảy ra trong quá khứ, kéo dài đến hiện tại</li>
+           <li>Hành động vừa mới xảy ra (just, already, yet)</li>
+           <li>Kinh nghiệm sống (ever, never, before)</li>
+           <li>Hành động lặp lại nhiều lần đến hiện tại</li>
+          </ul>
+         </div>
+         <div>
+          <h4 class="font-semibold text-blue-700 mb-2">Ví dụ:</h4>
+          <div class="bg-white rounded-lg p-3 border border-blue-200 space-y-2">
+           <p>• <strong>I have lived</strong> here for 5 years. (Tôi đã sống ở đây 5 năm rồi)</p>
+           <p>• <strong>She has just finished</strong> her homework. (Cô ấy vừa mới hoàn thành bài tập)</p>
+           <p>• <strong>Have you ever been</strong> to Japan? (Bạn đã từng đến Nhật Bản chưa?)</p>
+          </div>
+         </div>
+        </div>
+       </div><!-- Past Perfect -->
+       <div class="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-6 border-l-4 border-green-500">
+        <h3 class="text-xl font-bold text-green-800 mb-4">🟢 Past Perfect Tense</h3>
+        <div class="space-y-4">
+         <div>
+          <h4 class="font-semibold text-green-700 mb-2">Cấu trúc:</h4>
+          <div class="bg-white rounded-lg p-3 border border-green-200">
+           <p class="font-mono text-green-600"><strong>S + had + V3/Ved</strong></p>
+          </div>
+         </div>
+         <div>
+          <h4 class="font-semibold text-green-700 mb-2">Cách dùng:</h4>
+          <ul class="list-disc list-inside space-y-1 text-gray-700">
+           <li>Hành động xảy ra trước một hành động khác trong quá khứ</li>
+           <li>Hành động xảy ra trước một thời điểm cụ thể trong quá khứ</li>
+           <li>Dùng trong câu điều kiện loại 3</li>
+           <li>Dùng với "after", "before", "when", "by the time"</li>
+          </ul>
+         </div>
+         <div>
+          <h4 class="font-semibold text-green-700 mb-2">Ví dụ:</h4>
+          <div class="bg-white rounded-lg p-3 border border-green-200 space-y-2">
+           <p>• When I arrived, <strong>she had already left</strong>. (Khi tôi đến, cô ấy đã đi rồi)</p>
+           <p>• <strong>I had finished</strong> my work before 6 PM. (Tôi đã hoàn thành công việc trước 6h chiều)</p>
+           <p>• <strong>He had studied</strong> English for 3 years before moving to the US. (Anh ấy đã học tiếng Anh 3 năm trước khi chuyển đến Mỹ)</p>
+          </div>
+         </div>
+        </div>
+       </div><!-- Conditional Type 3 -->
+       <div class="bg-gradient-to-r from-purple-50 to-violet-50 rounded-xl p-6 border-l-4 border-purple-500">
+        <h3 class="text-xl font-bold text-purple-800 mb-4">🟣 Conditional Type 3 (Câu điều kiện loại 3)</h3>
+        <div class="space-y-4">
+         <div>
+          <h4 class="font-semibold text-purple-700 mb-2">Cấu trúc:</h4>
+          <div class="bg-white rounded-lg p-3 border border-purple-200">
+           <p class="font-mono text-purple-600"><strong>If + S + had + V3/Ved, S + would/could/might + have + V3/Ved</strong></p>
+          </div>
+         </div>
+         <div>
+          <h4 class="font-semibold text-purple-700 mb-2">Cách dùng:</h4>
+          <ul class="list-disc list-inside space-y-1 text-gray-700">
+           <li>Diễn tả điều kiện không có thật trong quá khứ</li>
+           <li>Hối tiếc về điều gì đó đã xảy ra hoặc không xảy ra</li>
+           <li>Giả định trái ngược với sự thật trong quá khứ</li>
+          </ul>
+         </div>
+         <div>
+          <h4 class="font-semibold text-purple-700 mb-2">Ví dụ:</h4>
+          <div class="bg-white rounded-lg p-3 border border-purple-200 space-y-2">
+           <p>• <strong>If I had studied harder</strong>, I <strong>would have passed</strong> the exam. (Nếu tôi đã học chăm chỉ hơn, tôi đã thi đậu rồi)</p>
+           <p>• <strong>If it hadn't rained</strong>, we <strong>could have gone</strong> to the beach. (Nếu trời không mưa, chúng ta đã có thể đi biển rồi)</p>
+           <p>• <strong>If she had arrived earlier</strong>, she <strong>might have met</strong> him. (Nếu cô ấy đến sớm hơn, cô ấy có thể đã gặp anh ấy rồi)</p>
+          </div>
+         </div>
+        </div>
+       </div><!-- Inversion with Conditionals -->
+       <div class="bg-gradient-to-r from-orange-50 to-amber-50 rounded-xl p-6 border-l-4 border-orange-500">
+        <h3 class="text-xl font-bold text-orange-800 mb-4">🟠 Đảo ngữ trong câu điều kiện</h3>
+        <div class="space-y-6"><!-- Type 1 Inversion -->
+         <div>
+          <h4 class="font-semibold text-orange-700 mb-2">Loại 1:</h4>
+          <div class="bg-white rounded-lg p-3 border border-orange-200 space-y-2">
+           <p class="font-mono text-orange-600"><strong>Should + S + V, S + will + V</strong></p>
+           <p class="text-sm text-gray-600">Thay cho: If + S + V (present), S + will + V</p>
+           <p>• <strong>Should you need help</strong>, call me. (= If you need help, call me)</p>
+           <p>• <strong>Should it rain</strong>, we will stay inside. (= If it rains, we will stay inside)</p>
+          </div>
+         </div><!-- Type 2 Inversion -->
+         <div>
+          <h4 class="font-semibold text-orange-700 mb-2">Loại 2:</h4>
+          <div class="bg-white rounded-lg p-3 border border-orange-200 space-y-2">
+           <p class="font-mono text-orange-600"><strong>Were + S + to V / Were + S + Adj/N, S + would + V</strong></p>
+           <p class="text-sm text-gray-600">Thay cho: If + S + V2/were, S + would + V</p>
+           <p>• <strong>Were I rich</strong>, I would travel the world. (= If I were rich...)</p>
+           <p>• <strong>Were she to come</strong>, we would be happy. (= If she came...)</p>
+          </div>
+         </div><!-- Type 3 Inversion -->
+         <div>
+          <h4 class="font-semibold text-orange-700 mb-2">Loại 3:</h4>
+          <div class="bg-white rounded-lg p-3 border border-orange-200 space-y-2">
+           <p class="font-mono text-orange-600"><strong>Had + S + V3/Ved, S + would have + V3/Ved</strong></p>
+           <p class="text-sm text-gray-600">Thay cho: If + S + had + V3/Ved, S + would have + V3/Ved</p>
+           <p>• <strong>Had I known</strong>, I would have helped. (= If I had known...)</p>
+           <p>• <strong>Had she studied harder</strong>, she would have passed. (= If she had studied harder...)</p>
+          </div>
+         </div>
+        </div>
+       </div><!-- No sooner...than / Hardly...when -->
+       <div class="bg-gradient-to-r from-red-50 to-pink-50 rounded-xl p-6 border-l-4 border-red-500">
+        <h3 class="text-xl font-bold text-red-800 mb-4">🔴 Đảo ngữ với No sooner...than / Hardly...when</h3>
+        <div class="space-y-6"><!-- No sooner...than -->
+         <div>
+          <h4 class="font-semibold text-red-700 mb-2">No sooner...than:</h4>
+          <div class="bg-white rounded-lg p-3 border border-red-200 space-y-2">
+           <p class="font-mono text-red-600"><strong>No sooner + had + S + V3/Ved + than + S + V2/Ved</strong></p>
+           <p class="text-sm text-gray-600">Nghĩa: Vừa mới...thì đã... (ngay lập tức)</p>
+           <p>• <strong>No sooner had I arrived</strong> than it started to rain.</p>
+           <p class="text-sm italic">(Vừa mới tôi đến thì trời bắt đầu mưa)</p>
+           <p>• <strong>No sooner had she finished</strong> than the phone rang.</p>
+           <p class="text-sm italic">(Vừa mới cô ấy hoàn thành thì điện thoại reo)</p>
+          </div>
+         </div><!-- Hardly...when -->
+         <div>
+          <h4 class="font-semibold text-red-700 mb-2">Hardly...when:</h4>
+          <div class="bg-white rounded-lg p-3 border border-red-200 space-y-2">
+           <p class="font-mono text-red-600"><strong>Hardly + had + S + V3/Ved + when + S + V2/Ved</strong></p>
+           <p class="text-sm text-gray-600">Nghĩa: Vừa mới...thì đã... (ngay lập tức)</p>
+           <p>• <strong>Hardly had we sat down</strong> when the show began.</p>
+           <p class="text-sm italic">(Vừa mới chúng tôi ngồi xuống thì chương trình bắt đầu)</p>
+           <p>• <strong>Hardly had he left</strong> when she arrived.</p>
+           <p class="text-sm italic">(Vừa mới anh ấy đi thì cô ấy đến)</p>
+          </div>
+         </div><!-- Scarcely...when -->
+         <div>
+          <h4 class="font-semibold text-red-700 mb-2">Scarcely...when (tương tự Hardly):</h4>
+          <div class="bg-white rounded-lg p-3 border border-red-200 space-y-2">
+           <p class="font-mono text-red-600"><strong>Scarcely + had + S + V3/Ved + when + S + V2/Ved</strong></p>
+           <p>• <strong>Scarcely had the meeting started</strong> when the fire alarm went off.</p>
+           <p class="text-sm italic">(Vừa mới cuộc họp bắt đầu thì chuông báo cháy kêu)</p>
+          </div>
+         </div><!-- Important Notes -->
+         <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+          <h5 class="font-semibold text-yellow-800 mb-2">📝 Lưu ý quan trọng:</h5>
+          <ul class="list-disc list-inside space-y-1 text-yellow-700 text-sm">
+           <li><strong>No sooner</strong> luôn đi với <strong>than</strong></li>
+           <li><strong>Hardly/Scarcely</strong> luôn đi với <strong>when</strong></li>
+           <li>Mệnh đề chính dùng Past Perfect (had + V3)</li>
+           <li>Mệnh đề phụ dùng Simple Past (V2/Ved)</li>
+           <li>Cả hai cấu trúc đều mang nghĩa "vừa mới...thì đã"</li>
+          </ul>
+         </div>
+        </div>
+       </div>
+      </div><!-- Grammar Practice Section -->
+      <div id="grammar-practice" class="hidden">
+       <div class="text-center mb-6">
+        <div class="text-sm text-gray-600 mb-2">
+         Câu hỏi <span id="current-grammar-question">1</span> / <span id="total-grammar-questions">30</span>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-2">
+         <div class="bg-purple-600 h-2 rounded-full transition-all duration-300" id="grammar-progress" style="width: 10%"></div>
+        </div>
+       </div>
+       <div id="grammar-container" class="max-w-2xl mx-auto"><!-- Grammar questions will be generated here -->
+       </div>
+       <div class="flex justify-center mt-6"><button id="grammar-next" class="px-8 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed" disabled>Câu tiếp theo</button>
+       </div>
+       <div id="grammar-results" class="hidden text-center mt-8">
+        <h3 class="text-2xl font-bold mb-4">Hoàn thành bài tập!</h3>
+        <div class="text-6xl mb-4" id="grammar-score-display">
+         0/30
+        </div>
+        <p class="text-gray-600 mb-6" id="grammar-feedback">Làm tốt lắm!</p><button onclick="restartGrammar()" class="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors mr-4">Làm lại</button> <button onclick="showSection('home')" class="px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">Về trang chủ</button>
+       </div>
+      </div>
+     </div>
+    </div><!-- Vocabulary Definition Modal -->
+    <div id="vocab-modal" class="modal">
+     <div class="bg-white rounded-xl p-6 max-w-md mx-4 shadow-2xl">
+      <div class="flex justify-between items-center mb-4">
+       <div>
+        <h3 class="text-xl font-bold" id="modal-word">Word</h3>
+        <p class="text-sm text-gray-500" id="modal-ipa">/ˈfəʊnətɪks/</p>
+       </div>
+       <div class="flex items-center space-x-2"><button onclick="pronounceModalWord()" class="text-blue-600 hover:text-blue-800 p-2 rounded-full hover:bg-blue-50 transition-all">
+         <svg class="w-5 h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+         </svg></button> <button onclick="closeVocabModal()" class="text-gray-500 hover:text-gray-700">
+         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+         </svg></button>
+       </div>
+      </div>
+      <div class="space-y-3">
+       <div>
+        <h4 class="font-semibold text-gray-700">Definition:</h4>
+        <p id="modal-definition" class="text-gray-600">Definition here</p>
+       </div>
+       <div>
+        <h4 class="font-semibold text-gray-700">Example:</h4>
+        <p id="modal-example" class="text-gray-600 italic">Example here</p>
+       </div>
+      </div>
+     </div>
+    </div><!-- Toast Notification -->
+    <div id="toast" class="toast"><span id="toast-message">Success!</span>
+    </div>
+   </div>
+  </main>
+  <script>
+        // Configuration object for Element SDK
+        const defaultConfig = {
+            background_color: "#dbeafe",
+            surface_color: "#ffffff", 
+            text_color: "#374151",
+            primary_action_color: "#3b82f6",
+            secondary_action_color: "#6b7280",
+            unit_title: "Unit 3: Global Warming & Ecosystems",
+            welcome_message: "Chào mừng bạn đến với bài học tiếng Anh cùng Mega Master 11 nhé!",
+            vocab_title: "Từ vựng",
+            reading_title: "Đọc hiểu", 
+            grammar_title: "Ngữ pháp"
+        };
+
+        // Global state
+        let currentCardIndex = 0;
+        let currentGrammarQuestion = 0;
+        let grammarScore = 0;
+        let grammarAnswers = [];
+        let readingAnswers = [];
+        let userData = [];
+        let isInitialized = false;
+        
+        // Vocabulary quiz state
+        let currentVocabQuiz = 0;
+        let vocabQuizScore = 0;
+        let vocabQuizQuestions = [];
+        let vocabQuizAnswers = [];
+
+        // Vocabulary data
+        const vocabularyData = [
+            { word: "grassland", ipa: "/ˈɡrɑːslænd/", type: "noun", definition: "Vùng đất rộng lớn được bao phủ bởi cỏ", example: "The African grasslands are home to many wild animals." },
+            { word: "desert", ipa: "/ˈdezərt/", type: "noun", definition: "Vùng đất khô cằn, ít mưa", example: "The Sahara is the largest hot desert in the world." },
+            { word: "swamp", ipa: "/swɑːmp/", type: "noun", definition: "Vùng đất thấp trũng có nhiều nước đọng", example: "Alligators live in the swamps of Florida." },
+            { word: "temperature", ipa: "/ˈtemprətʃər/", type: "noun", definition: "Nhiệt độ, độ nóng lạnh của một nơi", example: "The temperature today is 25 degrees Celsius." },
+            { word: "affect", ipa: "/əˈfekt/", type: "verb", definition: "Ảnh hưởng, tác động đến", example: "Climate change affects weather patterns worldwide." },
+            { word: "effect", ipa: "/ɪˈfekt/", type: "noun", definition: "Kết quả, hậu quả của một hành động", example: "The greenhouse effect causes global warming." },
+            { word: "effective", ipa: "/ɪˈfektɪv/", type: "adjective", definition: "Hiệu quả, có tác dụng tốt", example: "Solar panels are effective at generating clean energy." },
+            { word: "marine", ipa: "/məˈriːn/", type: "adjective", definition: "Thuộc về biển, đại dương", example: "Marine life includes fish, whales, and coral reefs." },
+            { word: "extreme", ipa: "/ɪkˈstriːm/", type: "adjective", definition: "Cực độ, rất lớn, khác thường", example: "Extreme weather events are becoming more common." },
+            { word: "emit", ipa: "/ɪˈmɪt/", type: "verb", definition: "Phát ra, thải ra", example: "Cars emit carbon dioxide into the atmosphere." },
+            { word: "emission", ipa: "/ɪˈmɪʃən/", type: "noun", definition: "Sự phát thải, khí thải", example: "We need to reduce carbon emissions to fight climate change." },
+            { word: "extinct", ipa: "/ɪkˈstɪŋkt/", type: "adjective", definition: "Tuyệt chủng, không còn tồn tại", example: "Dinosaurs became extinct millions of years ago." },
+            { word: "extinction", ipa: "/ɪkˈstɪŋkʃən/", type: "noun", definition: "Sự tuyệt chủng", example: "Many species face extinction due to habitat loss." },
+            { word: "ecosystem", ipa: "/ˈiːkoʊsɪstəm/", type: "noun", definition: "Hệ sinh thái", example: "The rainforest ecosystem is very diverse." },
+            { word: "hurricane", ipa: "/ˈhɜːrɪkeɪn/", type: "noun", definition: "Bão nhiệt đới có gió rất mạnh", example: "The hurricane caused massive damage to the coastal city." },
+            { word: "ice cap", ipa: "/ˈaɪs kæp/", type: "noun", definition: "Lớp băng dày phủ trên một vùng đất", example: "The polar ice caps are melting due to global warming." },
+            { word: "flood", ipa: "/flʌd/", type: "noun", definition: "Lũ lụt, nước tràn lên đất khô", example: "Heavy rains caused severe flooding in the valley." },
+            { word: "heatwave", ipa: "/ˈhiːtweɪv/", type: "noun", definition: "Đợt nắng nóng kéo dài", example: "The heatwave lasted for two weeks with temperatures over 40°C." },
+            { word: "drought", ipa: "/draʊt/", type: "noun", definition: "Hạn hán, thời kỳ ít mưa kéo dài", example: "The drought destroyed many crops this year." },
+            { word: "landslide", ipa: "/ˈlændslaɪd/", type: "noun", definition: "Sạt lở đất, lở núi", example: "Heavy rains triggered a landslide on the mountain." },
+            { word: "put off", ipa: "/pʊt ɔːf/", type: "phrasal verb", definition: "Hoãn lại, trì hoãn", example: "We had to put off the picnic because of the rain." },
+            { word: "put on", ipa: "/pʊt ɑːn/", type: "phrasal verb", definition: "Mặc, đeo lên người", example: "Put on your jacket, it's cold outside." },
+            { word: "arctic", ipa: "/ˈɑːrktɪk/", type: "adjective", definition: "Thuộc về Bắc Cực, rất lạnh", example: "Arctic animals have thick fur to keep warm." },
+            { word: "care", ipa: "/ker/", type: "verb", definition: "Quan tâm, chăm sóc", example: "We must care for our environment." },
+            { word: "careful", ipa: "/ˈkerfəl/", type: "adjective", definition: "Cẩn thận, thận trọng", example: "Be careful when crossing the street." },
+            { word: "careless", ipa: "/ˈkerləs/", type: "adjective", definition: "Bất cẩn, thiếu thận trọng", example: "Careless driving can cause accidents." },
+            { word: "caring", ipa: "/ˈkerɪŋ/", type: "adjective", definition: "Quan tâm, yêu thương", example: "She is a very caring person who helps everyone." },
+            { word: "computer programmer", ipa: "/kəmˈpjuːtər ˈproʊɡræmər/", type: "noun", definition: "Lập trình viên máy tính", example: "The computer programmer created a new app." },
+            { word: "determined", ipa: "/dɪˈtɜːrmɪnd/", type: "adjective", definition: "Quyết tâm, kiên quyết", example: "She was determined to finish the marathon." },
+            { word: "determinedly", ipa: "/dɪˈtɜːrmɪndli/", type: "adverb", definition: "Một cách quyết tâm", example: "He worked determinedly to achieve his goals." },
+            { word: "determine", ipa: "/dɪˈtɜːrmɪn/", type: "verb", definition: "Xác định, quyết định", example: "Scientists determine the cause of climate change." },
+            { word: "determination", ipa: "/dɪˌtɜːrmɪˈneɪʃən/", type: "noun", definition: "Sự quyết tâm, ý chí", example: "Her determination helped her succeed." },
+            { word: "extreme weather", ipa: "/ɪkˈstriːm ˈweðər/", type: "noun phrase", definition: "Thời tiết cực đoan", example: "Extreme weather events are increasing worldwide." },
+            { word: "flight attendant", ipa: "/flaɪt əˈtendənt/", type: "noun", definition: "Tiếp viên hàng không", example: "The flight attendant showed us the safety procedures." },
+            { word: "fumes", ipa: "/fjuːmz/", type: "noun", definition: "Khói độc, hơi độc hại", example: "Car fumes pollute the air in cities." },
+            { word: "heat up", ipa: "/hiːt ʌp/", type: "phrasal verb", definition: "Nóng lên, làm nóng", example: "The Earth is heating up due to greenhouse gases." },
+            { word: "inventive", ipa: "/ɪnˈventɪv/", type: "adjective", definition: "Sáng tạo, có khả năng phát minh", example: "She has an inventive mind for solving problems." },
+            { word: "inventively", ipa: "/ɪnˈventɪvli/", type: "adverb", definition: "Một cách sáng tạo", example: "He solved the problem inventively." },
+            { word: "invention", ipa: "/ɪnˈvenʃən/", type: "noun", definition: "Phát minh, sự sáng chế", example: "The telephone was a great invention." },
+            { word: "invent", ipa: "/ɪnˈvent/", type: "verb", definition: "Phát minh, sáng chế", example: "Thomas Edison invented the light bulb." },
+            { word: "loss", ipa: "/lɔːs/", type: "noun", definition: "Sự mất mát, thiệt hại", example: "The loss of forests affects wildlife habitats." },
+            { word: "lose", ipa: "/luːz/", type: "verb", definition: "Mất, bị mất", example: "We might lose many species to extinction." },
+            { word: "organic", ipa: "/ɔːrˈɡænɪk/", type: "adjective", definition: "Hữu cơ, tự nhiên", example: "Organic food is grown without pesticides." },
+            { word: "organically", ipa: "/ɔːrˈɡænɪkli/", type: "adverb", definition: "Một cách hữu cơ, tự nhiên", example: "These vegetables are grown organically." },
+            { word: "plumber", ipa: "/ˈplʌmər/", type: "noun", definition: "Thợ sửa ống nước", example: "We called a plumber to fix the leak." },
+            { word: "politician", ipa: "/ˌpɑːləˈtɪʃən/", type: "noun", definition: "Chính trị gia", example: "The politician promised to protect the environment." },
+            { word: "politics", ipa: "/ˈpɑːlətɪks/", type: "noun", definition: "Chính trị", example: "Environmental issues are important in politics." },
+            { word: "political", ipa: "/pəˈlɪtɪkəl/", type: "adjective", definition: "Thuộc về chính trị", example: "Climate change is a major political issue." },
+            { word: "recycle", ipa: "/riːˈsaɪkəl/", type: "verb", definition: "Tái chế, tái sử dụng", example: "We should recycle plastic bottles and paper." },
+            { word: "recycling", ipa: "/riːˈsaɪklɪŋ/", type: "noun", definition: "Sự tái chế", example: "Recycling helps reduce waste and pollution." },
+            { word: "recyclable", ipa: "/riːˈsaɪkləbəl/", type: "adjective", definition: "Có thể tái chế", example: "Glass and aluminum are recyclable materials." },
+            { word: "result", ipa: "/rɪˈzʌlt/", type: "noun", definition: "Kết quả, hậu quả", example: "Global warming is a result of greenhouse gas emissions." },
+            { word: "result in", ipa: "/rɪˈzʌlt ɪn/", type: "phrasal verb", definition: "Dẫn đến, gây ra", example: "Deforestation can result in soil erosion." },
+            { word: "reuse", ipa: "/riːˈjuːz/", type: "verb", definition: "Sử dụng lại", example: "We can reuse glass jars for storage." },
+            { word: "reusable", ipa: "/riːˈjuːzəbəl/", type: "adjective", definition: "Có thể sử dụng lại", example: "Reusable bags help reduce plastic waste." },
+            { word: "surgeon", ipa: "/ˈsɜːrdʒən/", type: "noun", definition: "Bác sĩ phẫu thuật", example: "The surgeon successfully completed the heart operation." },
+            { word: "wildfire", ipa: "/ˈwaɪldfaɪər/", type: "noun", definition: "Cháy rừng, hỏa hoạn tự nhiên", example: "The wildfire destroyed thousands of acres of forest." },
+            { word: "climate", ipa: "/ˈklaɪmət/", type: "noun", definition: "Khí hậu", example: "The climate in tropical regions is hot and humid." },
+            { word: "global warming", ipa: "/ˈɡloʊbəl ˈwɔːrmɪŋ/", type: "noun phrase", definition: "Sự nóng lên toàn cầu", example: "Global warming is caused by greenhouse gas emissions." },
+            { word: "greenhouse gas", ipa: "/ˈɡriːnhaʊs ɡæs/", type: "noun phrase", definition: "Khí nhà kính", example: "Carbon dioxide is a major greenhouse gas." }
+        ];
+
+        // Grammar questions
+        const grammarQuestions = [
+            {
+                question: "Chọn dạng đúng của Present Perfect: 'I _____ in this city for 5 years.'",
+                options: ["live", "lived", "have lived", "am living"],
+                correct: 2,
+                explanation: "Present Perfect với 'for' diễn tả hành động kéo dài từ quá khứ đến hiện tại"
+            },
+            {
+                question: "Chọn dạng đúng của Past Perfect: 'When I arrived, she _____ already.'",
+                options: ["left", "has left", "had left", "was leaving"],
+                correct: 2,
+                explanation: "Past Perfect diễn tả hành động xảy ra trước một hành động khác trong quá khứ"
+            },
+            {
+                question: "Chọn câu điều kiện loại 3 đúng:",
+                options: [
+                    "If I studied harder, I would pass the exam.",
+                    "If I had studied harder, I would have passed the exam.",
+                    "If I study harder, I will pass the exam.",
+                    "If I would study harder, I had passed the exam."
+                ],
+                correct: 1,
+                explanation: "Câu điều kiện loại 3: If + had + V3, would have + V3"
+            },
+            {
+                question: "Chọn dạng đảo ngữ đúng của câu điều kiện loại 1: 'If you need help, call me.'",
+                options: [
+                    "Should you need help, call me.",
+                    "Were you to need help, call me.",
+                    "Had you needed help, call me.",
+                    "Would you need help, call me."
+                ],
+                correct: 0,
+                explanation: "Đảo ngữ câu điều kiện loại 1: Should + S + V"
+            },
+            {
+                question: "Chọn dạng đảo ngữ đúng của câu điều kiện loại 2: 'If I were rich, I would travel.'",
+                options: [
+                    "Should I be rich, I would travel.",
+                    "Were I rich, I would travel.",
+                    "Had I been rich, I would travel.",
+                    "Would I be rich, I would travel."
+                ],
+                correct: 1,
+                explanation: "Đảo ngữ câu điều kiện loại 2: Were + S + adj/noun"
+            },
+            {
+                question: "Chọn dạng đảo ngữ đúng của câu điều kiện loại 3: 'If I had known, I would have helped.'",
+                options: [
+                    "Should I have known, I would have helped.",
+                    "Were I to have known, I would have helped.",
+                    "Had I known, I would have helped.",
+                    "Would I have known, I would have helped."
+                ],
+                correct: 2,
+                explanation: "Đảo ngữ câu điều kiện loại 3: Had + S + V3"
+            },
+            {
+                question: "Chọn cấu trúc đúng với 'No sooner...than':",
+                options: [
+                    "No sooner I arrived than it rained.",
+                    "No sooner had I arrived than it rained.",
+                    "No sooner I had arrived than it rained.",
+                    "No sooner did I arrive than it rained."
+                ],
+                correct: 1,
+                explanation: "No sooner + had + S + V3 + than + S + V2"
+            },
+            {
+                question: "Chọn cấu trúc đúng với 'Hardly...when':",
+                options: [
+                    "Hardly we sat down when the show began.",
+                    "Hardly did we sit down when the show began.",
+                    "Hardly had we sat down when the show began.",
+                    "Hardly we had sat down when the show began."
+                ],
+                correct: 2,
+                explanation: "Hardly + had + S + V3 + when + S + V2"
+            },
+            {
+                question: "Viết lại câu với Present Perfect: 'She started learning English 3 years ago and still learns now.'",
+                options: [
+                    "She learned English for 3 years.",
+                    "She has learned English for 3 years.",
+                    "She had learned English for 3 years.",
+                    "She was learning English for 3 years."
+                ],
+                correct: 1,
+                explanation: "Present Perfect với 'for' diễn tả hành động bắt đầu trong quá khứ và tiếp tục đến hiện tại"
+            },
+            {
+                question: "Chọn từ đúng để hoàn thành câu: '_____ had the meeting started when the fire alarm rang.'",
+                options: ["No sooner", "Hardly", "Scarcely", "All are correct"],
+                correct: 3,
+                explanation: "Cả ba từ 'No sooner', 'Hardly', và 'Scarcely' đều có thể dùng với nghĩa 'vừa mới...thì đã'"
+            },
+            {
+                question: "Chọn dạng đúng của Present Perfect: 'They _____ never _____ to Japan.'",
+                options: ["have / been", "has / been", "had / been", "are / been"],
+                correct: 0,
+                explanation: "Present Perfect với 'never' diễn tả kinh nghiệm chưa từng có"
+            },
+            {
+                question: "Hoàn thành câu với Past Perfect: 'By the time we arrived, the movie _____.'",
+                options: ["started", "has started", "had started", "was starting"],
+                correct: 2,
+                explanation: "Past Perfect với 'by the time' diễn tả hành động hoàn thành trước một thời điểm trong quá khứ"
+            },
+            {
+                question: "Chọn câu điều kiện loại 3 đúng:",
+                options: [
+                    "If it hadn't rained, we could go to the beach.",
+                    "If it hadn't rained, we could have gone to the beach.",
+                    "If it doesn't rain, we could have gone to the beach.",
+                    "If it won't rain, we could go to the beach."
+                ],
+                correct: 1,
+                explanation: "Câu điều kiện loại 3: If + hadn't + V3, could have + V3"
+            },
+            {
+                question: "Viết lại câu với đảo ngữ: 'If she comes early, we can start the meeting.'",
+                options: [
+                    "Should she come early, we can start the meeting.",
+                    "Were she to come early, we can start the meeting.",
+                    "Had she come early, we can start the meeting.",
+                    "Would she come early, we can start the meeting."
+                ],
+                correct: 0,
+                explanation: "Đảo ngữ câu điều kiện loại 1: Should + S + V"
+            },
+            {
+                question: "Chọn dạng đúng với 'Scarcely...when':",
+                options: [
+                    "Scarcely I had finished when he called.",
+                    "Scarcely had I finished when he called.",
+                    "Scarcely did I finish when he called.",
+                    "Scarcely I finished when he called."
+                ],
+                correct: 1,
+                explanation: "Scarcely + had + S + V3 + when + S + V2"
+            },
+            {
+                question: "Chọn dạng đúng của Present Perfect: 'She _____ just _____ her homework.'",
+                options: ["have / finished", "has / finished", "had / finished", "is / finished"],
+                correct: 1,
+                explanation: "Present Perfect với 'just' diễn tả hành động vừa mới hoàn thành"
+            },
+            {
+                question: "Hoàn thành câu với Past Perfect: 'After he _____ dinner, he watched TV.'",
+                options: ["ate", "has eaten", "had eaten", "was eating"],
+                correct: 2,
+                explanation: "Past Perfect với 'after' diễn tả hành động xảy ra trước hành động khác trong quá khứ"
+            },
+            {
+                question: "Chọn câu điều kiện loại 3 đúng:",
+                options: [
+                    "If I had more money, I would have bought that car.",
+                    "If I had had more money, I would have bought that car.",
+                    "If I have more money, I would have bought that car.",
+                    "If I would have more money, I had bought that car."
+                ],
+                correct: 1,
+                explanation: "Câu điều kiện loại 3: If + had + V3, would have + V3"
+            },
+            {
+                question: "Viết lại câu với đảo ngữ: 'If I were you, I would accept the offer.'",
+                options: [
+                    "Should I be you, I would accept the offer.",
+                    "Were I you, I would accept the offer.",
+                    "Had I been you, I would accept the offer.",
+                    "Would I be you, I would accept the offer."
+                ],
+                correct: 1,
+                explanation: "Đảo ngữ câu điều kiện loại 2: Were + S + N/Adj"
+            },
+            {
+                question: "Chọn cấu trúc đúng với 'No sooner...than':",
+                options: [
+                    "No sooner did he arrive than the party started.",
+                    "No sooner he arrived than the party started.",
+                    "No sooner had he arrived than the party started.",
+                    "No sooner he had arrived than the party started."
+                ],
+                correct: 2,
+                explanation: "No sooner + had + S + V3 + than + S + V2"
+            },
+            {
+                question: "Chọn dạng đúng của Present Perfect: 'How long _____ you _____ English?'",
+                options: ["do / study", "have / studied", "has / studied", "had / studied"],
+                correct: 1,
+                explanation: "Present Perfect với 'How long' hỏi về thời gian kéo dài đến hiện tại"
+            },
+            {
+                question: "Hoàn thành câu với Past Perfect: 'She told me that she _____ the book.'",
+                options: ["read", "has read", "had read", "was reading"],
+                correct: 2,
+                explanation: "Past Perfect trong câu tường thuật diễn tả hành động xảy ra trước thời điểm nói trong quá khứ"
+            },
+            {
+                question: "Chọn câu điều kiện loại 3 đúng:",
+                options: [
+                    "If they had left earlier, they wouldn't miss the train.",
+                    "If they had left earlier, they wouldn't have missed the train.",
+                    "If they left earlier, they wouldn't have missed the train.",
+                    "If they would leave earlier, they hadn't missed the train."
+                ],
+                correct: 1,
+                explanation: "Câu điều kiện loại 3: If + had + V3, wouldn't have + V3"
+            },
+            {
+                question: "Viết lại câu với đảo ngữ: 'If it had been sunny, we would have gone swimming.'",
+                options: [
+                    "Should it have been sunny, we would have gone swimming.",
+                    "Were it to have been sunny, we would have gone swimming.",
+                    "Had it been sunny, we would have gone swimming.",
+                    "Would it have been sunny, we would have gone swimming."
+                ],
+                correct: 2,
+                explanation: "Đảo ngữ câu điều kiện loại 3: Had + S + V3"
+            },
+            {
+                question: "Chọn cấu trúc đúng với 'Hardly...when':",
+                options: [
+                    "Hardly the show had begun when it started raining.",
+                    "Hardly had the show begun when it started raining.",
+                    "Hardly did the show begin when it started raining.",
+                    "Hardly the show began when it started raining."
+                ],
+                correct: 1,
+                explanation: "Hardly + had + S + V3 + when + S + V2"
+            },
+            {
+                question: "Chọn dạng đúng của Present Perfect: 'I _____ already _____ my lunch.'",
+                options: ["have / ate", "have / eaten", "has / eaten", "had / eaten"],
+                correct: 1,
+                explanation: "Present Perfect với 'already' diễn tả hành động đã hoàn thành"
+            },
+            {
+                question: "Hoàn thành câu với Past Perfect: 'Before she moved to London, she _____ in Paris.'",
+                options: ["lived", "has lived", "had lived", "was living"],
+                correct: 2,
+                explanation: "Past Perfect với 'before' diễn tả hành động xảy ra trước hành động khác trong quá khứ"
+            },
+            {
+                question: "Chọn câu điều kiện loại 3 đúng:",
+                options: [
+                    "If he had studied medicine, he would be a doctor now.",
+                    "If he had studied medicine, he would have been a doctor.",
+                    "If he studied medicine, he would have been a doctor.",
+                    "If he would study medicine, he had been a doctor."
+                ],
+                correct: 1,
+                explanation: "Câu điều kiện loại 3: If + had + V3, would have + V3"
+            },
+            {
+                question: "Chọn từ đúng để hoàn thành câu: '_____ had we entered the room when the lights went out.'",
+                options: ["No sooner", "Hardly", "Scarcely", "All are correct"],
+                correct: 3,
+                explanation: "Cả ba từ đều có thể dùng với nghĩa 'vừa mới...thì đã'"
+            },
+            {
+                question: "Chọn dạng đúng của Present Perfect: '_____ you ever _____ sushi?'",
+                options: ["Do / eat", "Have / eaten", "Has / eaten", "Had / eaten"],
+                correct: 1,
+                explanation: "Present Perfect với 'ever' hỏi về kinh nghiệm"
+            }
+        ];
+
+        // Reading comprehension questions
+        const readingQuestions = [
+            {
+                question: "What is described as one of the most serious challenges facing our planet today?",
+                options: ["Ocean pollution", "Global warming", "Deforestation", "Overpopulation"],
+                correct: 1
+            },
+            {
+                question: "According to the passage, what are the main causes of climate change?",
+                options: ["Natural disasters", "Solar radiation", "Greenhouse gas emissions", "Ocean currents"],
+                correct: 2
+            },
+            {
+                question: "Which environments are mentioned as being affected by species extinction?",
+                options: ["Only marine environments", "Grasslands, deserts, and marine environments", "Only grasslands", "Only polar regions"],
+                correct: 1
+            },
+            {
+                question: "What happens when polar ice caps melt rapidly?",
+                options: ["They cause droughts", "They create hurricanes", "They cause dangerous floods", "They reduce temperatures"],
+                correct: 2
+            },
+            {
+                question: "What solutions does the passage suggest to help reduce the climate crisis?",
+                options: ["Only recycling materials", "Recycling, using reusable products, and choosing organic foods", "Only using organic foods", "Only developing new technology"],
+                correct: 1
+            }
+        ];
+
+        // Data SDK handler
+        const dataHandler = {
+            onDataChanged(data) {
+                userData = data;
+                updateProgress();
+                updateSectionStatus();
+            }
+        };
+
+        // Element SDK implementation
+        const elementImplementation = {
+            defaultConfig: defaultConfig,
+            onConfigChange: async (config) => {
+                // Update background
+                const mainContent = document.getElementById('main-content');
+                mainContent.style.background = `linear-gradient(to bottom right, ${config.background_color || defaultConfig.background_color}, ${config.primary_action_color || defaultConfig.primary_action_color}33)`;
+                
+                // Update surface colors
+                const surfaces = document.querySelectorAll('.bg-white, .section-card');
+                surfaces.forEach(surface => {
+                    surface.style.backgroundColor = config.surface_color || defaultConfig.surface_color;
+                });
+
+                // Update text colors
+                const textElements = document.querySelectorAll('h1, h2, h3, h4, p, span, .text-gray-700, .text-gray-600');
+                textElements.forEach(element => {
+                    if (!element.classList.contains('text-white')) {
+                        element.style.color = config.text_color || defaultConfig.text_color;
+                    }
+                });
+
+                // Update primary action colors
+                const primaryButtons = document.querySelectorAll('#next-card, #quiz-next, .bg-blue-600, .bg-purple-600');
+                primaryButtons.forEach(button => {
+                    button.style.backgroundColor = config.primary_action_color || defaultConfig.primary_action_color;
+                });
+
+                // Update progress bars
+                const progressBars = document.querySelectorAll('#progress-bar, #vocab-progress, #quiz-progress');
+                progressBars.forEach(bar => {
+                    bar.style.backgroundColor = config.primary_action_color || defaultConfig.primary_action_color;
+                });
+
+                // Update secondary action colors
+                const secondaryButtons = document.querySelectorAll('#prev-card, .bg-gray-300, .bg-gray-600');
+                secondaryButtons.forEach(button => {
+                    button.style.backgroundColor = config.secondary_action_color || defaultConfig.secondary_action_color;
+                });
+
+                // Update text content
+                document.getElementById('unit-title').textContent = config.unit_title || defaultConfig.unit_title;
+                document.getElementById('welcome-message').textContent = config.welcome_message || defaultConfig.welcome_message;
+                document.getElementById('vocab-title').textContent = config.vocab_title || defaultConfig.vocab_title;
+                document.getElementById('reading-title').textContent = config.reading_title || defaultConfig.reading_title;
+                document.getElementById('grammar-title').textContent = config.grammar_title || defaultConfig.grammar_title;
+            },
+            mapToCapabilities: (config) => ({
+                recolorables: [
+                    {
+                        get: () => config.background_color || defaultConfig.background_color,
+                        set: (value) => {
+                            if (window.elementSdk) {
+                                window.elementSdk.setConfig({ background_color: value });
+                            }
+                        }
+                    },
+                    {
+                        get: () => config.surface_color || defaultConfig.surface_color,
+                        set: (value) => {
+                            if (window.elementSdk) {
+                                window.elementSdk.setConfig({ surface_color: value });
+                            }
+                        }
+                    },
+                    {
+                        get: () => config.text_color || defaultConfig.text_color,
+                        set: (value) => {
+                            if (window.elementSdk) {
+                                window.elementSdk.setConfig({ text_color: value });
+                            }
+                        }
+                    },
+                    {
+                        get: () => config.primary_action_color || defaultConfig.primary_action_color,
+                        set: (value) => {
+                            if (window.elementSdk) {
+                                window.elementSdk.setConfig({ primary_action_color: value });
+                            }
+                        }
+                    },
+                    {
+                        get: () => config.secondary_action_color || defaultConfig.secondary_action_color,
+                        set: (value) => {
+                            if (window.elementSdk) {
+                                window.elementSdk.setConfig({ secondary_action_color: value });
+                            }
+                        }
+                    }
+                ],
+                borderables: [],
+                fontEditable: undefined,
+                fontSizeable: undefined
+            }),
+            mapToEditPanelValues: (config) => new Map([
+                ["unit_title", config.unit_title || defaultConfig.unit_title],
+                ["welcome_message", config.welcome_message || defaultConfig.welcome_message],
+                ["vocab_title", config.vocab_title || defaultConfig.vocab_title],
+                ["reading_title", config.reading_title || defaultConfig.reading_title],
+                ["grammar_title", config.grammar_title || defaultConfig.grammar_title]
+            ])
+        };
+
+        // Initialize application
+        async function initializeApp() {
+            if (isInitialized) return;
+            
+            try {
+                // Initialize Element SDK
+                if (window.elementSdk) {
+                    await window.elementSdk.init(elementImplementation);
+                }
+
+                // Initialize Data SDK
+                if (window.dataSdk) {
+                    const result = await window.dataSdk.init(dataHandler);
+                    if (!result.isOk) {
+                        console.error("Failed to initialize data SDK");
+                    }
+                }
+
+                isInitialized = true;
+                setupEventListeners();
+                initializeVocabulary();
+                initializeReading();
+                initializeGrammar();
+                updateProgress();
+                updateSectionStatus();
+            } catch (error) {
+                console.error("Failed to initialize app:", error);
+            }
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Flashcard interactions
+            document.getElementById('flashcard').addEventListener('click', flipCard);
+            document.getElementById('prev-card').addEventListener('click', previousCard);
+            document.getElementById('next-card').addEventListener('click', nextCard);
+
+            // Reading quiz
+            document.getElementById('check-reading').addEventListener('click', checkReadingAnswers);
+
+            // Grammar navigation
+            document.getElementById('grammar-next').addEventListener('click', nextGrammarQuestion);
+
+            // Vocabulary quiz
+            document.getElementById('start-vocab-quiz').addEventListener('click', startVocabQuiz);
+            document.getElementById('vocab-quiz-next').addEventListener('click', nextVocabQuizQuestion);
+
+            // Vocabulary highlights
+            document.querySelectorAll('.vocab-highlight').forEach(highlight => {
+                highlight.addEventListener('click', (e) => {
+                    const word = e.target.dataset.word;
+                    showVocabModal(word);
+                });
+            });
+
+            // Keyboard shortcuts for flashcards
+            document.addEventListener('keydown', (e) => {
+                // Only handle keyboard shortcuts when in vocabulary section
+                if (!document.getElementById('vocabulary-section').classList.contains('hidden')) {
+                    switch(e.code) {
+                        case 'Space':
+                            e.preventDefault(); // Prevent page scroll
+                            flipCard();
+                            break;
+                        case 'ArrowLeft':
+                            e.preventDefault();
+                            previousCard();
+                            break;
+                        case 'ArrowRight':
+                            e.preventDefault();
+                            nextCard();
+                            break;
+                    }
+                }
+            });
+        }
+
+        // Show different sections
+        function showSection(section) {
+            const sections = ['home-screen', 'vocabulary-section', 'reading-section', 'grammar-section'];
+            sections.forEach(s => {
+                document.getElementById(s).classList.add('hidden');
+            });
+            
+            const homeButton = document.getElementById('home-button');
+            
+            if (section === 'home') {
+                document.getElementById('home-screen').classList.remove('hidden');
+                homeButton.classList.add('hidden'); // Hide home button on home screen
+            } else {
+                document.getElementById(section + '-section').classList.remove('hidden');
+                homeButton.classList.remove('hidden'); // Show home button on other sections
+            }
+        }
+
+        // Vocabulary functions
+        function initializeVocabulary() {
+            updateFlashcard();
+            updateVocabProgress();
+        }
+
+        function updateFlashcard() {
+            const word = vocabularyData[currentCardIndex];
+            document.getElementById('vocab-word').textContent = word.word;
+            document.getElementById('vocab-word-back').textContent = word.word;
+            document.getElementById('vocab-ipa').textContent = word.ipa;
+            document.getElementById('vocab-type').textContent = word.type;
+            document.getElementById('vocab-type-back').textContent = word.type;
+            document.getElementById('vocab-definition').textContent = word.definition;
+            document.getElementById('vocab-example').textContent = word.example;
+            document.getElementById('current-card').textContent = currentCardIndex + 1;
+            document.getElementById('total-cards').textContent = vocabularyData.length;
+            
+            // Reset card flip
+            document.getElementById('flashcard').classList.remove('flipped');
+            
+            // Update navigation buttons
+            document.getElementById('prev-card').disabled = currentCardIndex === 0;
+            document.getElementById('next-card').disabled = currentCardIndex === vocabularyData.length - 1;
+        }
+
+        function flipCard() {
+            document.getElementById('flashcard').classList.toggle('flipped');
+        }
+
+        function previousCard() {
+            if (currentCardIndex > 0) {
+                currentCardIndex--;
+                updateFlashcard();
+                updateVocabProgress();
+                // Auto-pronounce the new word
+                setTimeout(() => {
+                    pronounceWord();
+                }, 300); // Small delay to let card animation complete
+            }
+        }
+
+        function nextCard() {
+            if (currentCardIndex < vocabularyData.length - 1) {
+                currentCardIndex++;
+                updateFlashcard();
+                updateVocabProgress();
+                // Auto-pronounce the new word
+                setTimeout(() => {
+                    pronounceWord();
+                }, 300); // Small delay to let card animation complete
+            }
+        }
+
+        function updateVocabProgress() {
+            const progress = ((currentCardIndex + 1) / vocabularyData.length) * 100;
+            document.getElementById('vocab-progress').style.width = progress + '%';
+        }
+
+        // Reading functions
+        function initializeReading() {
+            generateReadingQuiz();
+        }
+
+        function generateReadingQuiz() {
+            const quizContainer = document.getElementById('reading-quiz');
+            quizContainer.innerHTML = '';
+            
+            readingQuestions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'mb-6';
+                questionDiv.innerHTML = `
+                    <h5 class="font-semibold mb-3">${index + 1}. ${q.question}</h5>
+                    <div class="space-y-2">
+                        ${q.options.map((option, optIndex) => `
+                            <label class="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50 reading-quiz-option" data-question="${index}" data-option="${optIndex}">
+                                <input type="radio" name="reading-q${index}" value="${optIndex}" class="mr-3">
+                                <span>${option}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                `;
+                quizContainer.appendChild(questionDiv);
+            });
+        }
+
+        function checkReadingAnswers() {
+            let correct = 0;
+            readingAnswers = [];
+            
+            readingQuestions.forEach((q, index) => {
+                const selected = document.querySelector(`input[name="reading-q${index}"]:checked`);
+                const selectedValue = selected ? parseInt(selected.value) : -1;
+                readingAnswers.push(selectedValue);
+                
+                const options = document.querySelectorAll(`[data-question="${index}"]`);
+                options.forEach((option, optIndex) => {
+                    option.classList.remove('correct', 'incorrect');
+                    if (optIndex === q.correct) {
+                        option.classList.add('correct');
+                    } else if (optIndex === selectedValue && selectedValue !== q.correct) {
+                        option.classList.add('incorrect');
+                    }
+                });
+                
+                if (selectedValue === q.correct) {
+                    correct++;
+                }
+            });
+            
+            showToast(`Reading Quiz: ${correct}/${readingQuestions.length} correct!`);
+            updateProgress();
+        }
+
+        // Grammar functions
+        function initializeGrammar() {
+            showGrammarTab('theory'); // Start with theory tab
+        }
+
+        function showGrammarTab(tab) {
+            // Update tab buttons
+            const theoryTab = document.getElementById('theory-tab');
+            const practiceTab = document.getElementById('practice-tab');
+            
+            if (tab === 'theory') {
+                theoryTab.className = 'px-4 py-2 rounded-md bg-purple-600 text-white font-medium transition-all';
+                practiceTab.className = 'px-4 py-2 rounded-md text-gray-600 hover:text-gray-800 font-medium transition-all';
+                
+                document.getElementById('grammar-theory').classList.remove('hidden');
+                document.getElementById('grammar-practice').classList.add('hidden');
+            } else {
+                theoryTab.className = 'px-4 py-2 rounded-md text-gray-600 hover:text-gray-800 font-medium transition-all';
+                practiceTab.className = 'px-4 py-2 rounded-md bg-purple-600 text-white font-medium transition-all';
+                
+                document.getElementById('grammar-theory').classList.add('hidden');
+                document.getElementById('grammar-practice').classList.remove('hidden');
+                
+                // Initialize practice if not already done
+                if (currentGrammarQuestion === 0 && grammarAnswers.length === 0) {
+                    showGrammarQuestion();
+                }
+            }
+        }
+
+        function showGrammarQuestion() {
+            if (currentGrammarQuestion >= grammarQuestions.length) {
+                showGrammarResults();
+                return;
+            }
+            
+            const question = grammarQuestions[currentGrammarQuestion];
+            const container = document.getElementById('grammar-container');
+            
+            container.innerHTML = `
+                <div class="text-center mb-8">
+                    <h3 class="text-xl font-semibold mb-6">${question.question}</h3>
+                    <div class="grid gap-3">
+                        ${question.options.map((option, index) => `
+                            <button class="grammar-option p-4 border-2 border-gray-200 rounded-lg text-left hover:border-purple-300 transition-all" 
+                                    onclick="selectGrammarAnswer(${index})" data-option="${index}">
+                                ${option}
+                            </button>
+                        `).join('')}
+                    </div>
+                    <div id="grammar-explanation" class="hidden mt-4 p-4 bg-blue-50 rounded-lg">
+                        <h4 class="font-semibold text-blue-800 mb-2">Giải thích:</h4>
+                        <p class="text-blue-700">${question.explanation}</p>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('current-grammar-question').textContent = currentGrammarQuestion + 1;
+            document.getElementById('total-grammar-questions').textContent = grammarQuestions.length;
+            updateGrammarProgress();
+        }
+
+        function selectGrammarAnswer(selectedIndex) {
+            const question = grammarQuestions[currentGrammarQuestion];
+            const options = document.querySelectorAll('.grammar-option');
+            
+            options.forEach((option, index) => {
+                option.classList.remove('correct', 'incorrect');
+                option.onclick = null; // Disable further clicks
+                
+                if (index === question.correct) {
+                    option.classList.add('correct');
+                } else if (index === selectedIndex) {
+                    option.classList.add('incorrect');
+                }
+            });
+            
+            // Show explanation
+            document.getElementById('grammar-explanation').classList.remove('hidden');
+            
+            if (selectedIndex === question.correct) {
+                grammarScore++;
+                playGrammarCorrectSound(); // Play exciting correct sound
+            } else {
+                playGrammarWrongSound(); // Play dramatic wrong sound
+            }
+            
+            grammarAnswers.push(selectedIndex);
+            document.getElementById('grammar-next').disabled = false;
+        }
+
+        function nextGrammarQuestion() {
+            currentGrammarQuestion++;
+            document.getElementById('grammar-next').disabled = true;
+            
+            if (currentGrammarQuestion >= grammarQuestions.length) {
+                showGrammarResults();
+            } else {
+                showGrammarQuestion();
+            }
+        }
+
+        function showGrammarResults() {
+            document.getElementById('grammar-container').classList.add('hidden');
+            document.getElementById('grammar-next').classList.add('hidden');
+            document.getElementById('grammar-results').classList.remove('hidden');
+            
+            document.getElementById('grammar-score-display').textContent = `${grammarScore}/${grammarQuestions.length}`;
+            
+            let feedback = "";
+            const percentage = (grammarScore / grammarQuestions.length) * 100;
+            
+            if (percentage >= 80) {
+                feedback = "Xuất sắc! Bạn đã thành thạo ngữ pháp bài này!";
+            } else if (percentage >= 60) {
+                feedback = "Làm tốt! Hãy ôn lại và thử lần nữa.";
+            } else {
+                feedback = "Hãy luyện tập thêm! Ôn lại từ vựng và bài đọc.";
+            }
+            
+            document.getElementById('grammar-feedback').textContent = feedback;
+            updateProgress();
+        }
+
+        function updateGrammarProgress() {
+            const progress = ((currentGrammarQuestion + 1) / grammarQuestions.length) * 100;
+            document.getElementById('grammar-progress').style.width = progress + '%';
+        }
+
+        function restartGrammar() {
+            currentGrammarQuestion = 0;
+            grammarScore = 0;
+            grammarAnswers = [];
+            
+            document.getElementById('grammar-container').classList.remove('hidden');
+            document.getElementById('grammar-next').classList.remove('hidden');
+            document.getElementById('grammar-results').classList.add('hidden');
+            document.getElementById('grammar-next').disabled = true;
+            
+            showGrammarQuestion();
+        }
+
+        // Modal functions
+        function showVocabModal(word) {
+            const vocabData = vocabularyData.find(v => v.word === word);
+            if (!vocabData) return;
+            
+            document.getElementById('modal-word').textContent = vocabData.word;
+            document.getElementById('modal-ipa').textContent = vocabData.ipa;
+            document.getElementById('modal-definition').textContent = vocabData.definition;
+            document.getElementById('modal-example').textContent = vocabData.example;
+            document.getElementById('vocab-modal').classList.add('active');
+        }
+
+        function pronounceModalWord() {
+            const word = document.getElementById('modal-word').textContent;
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(word);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.8;
+                utterance.pitch = 1;
+                speechSynthesis.speak(utterance);
+            } else {
+                showToast("Speech synthesis not supported in this browser", "error");
+            }
+        }
+
+        function closeVocabModal() {
+            document.getElementById('vocab-modal').classList.remove('active');
+        }
+
+        // Progress tracking
+        function updateProgress() {
+            const vocabProgress = ((currentCardIndex + 1) / vocabularyData.length) * 100;
+            
+            const readingProgress = readingAnswers.length > 0 ? 100 : 0;
+            const grammarProgress = grammarAnswers.length >= grammarQuestions.length ? 100 : 0;
+            
+            const overallProgress = (vocabProgress + readingProgress + grammarProgress) / 3;
+            
+            // Update overall progress
+            document.getElementById('progress-bar').style.width = overallProgress + '%';
+            document.getElementById('progress-text').textContent = Math.round(overallProgress) + '%';
+            document.getElementById('overall-percentage').textContent = Math.round(overallProgress) + '%';
+            
+            // Update individual section progress bars
+            document.getElementById('vocab-progress-home').style.width = vocabProgress + '%';
+            document.getElementById('reading-progress-home').style.width = readingProgress + '%';
+            document.getElementById('grammar-progress-home').style.width = grammarProgress + '%';
+            
+            // Update progress text
+            document.getElementById('vocab-progress-text').textContent = `${currentCardIndex + 1}/${vocabularyData.length} từ`;
+            document.getElementById('reading-progress-text').textContent = readingProgress > 0 ? 'Hoàn thành' : '0/5 câu';
+            document.getElementById('grammar-progress-text').textContent = grammarProgress > 0 ? `${grammarScore}/${grammarQuestions.length} đúng` : '0/30 câu';
+        }
+
+        function updateSectionStatus() {
+            // This function can be used for additional status updates if needed
+        }
+
+        // Utility functions
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            
+            toastMessage.textContent = message;
+            toast.style.backgroundColor = type === 'error' ? '#ef4444' : '#10b981';
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Pronunciation function
+        function pronounceWord() {
+            const word = vocabularyData[currentCardIndex];
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(word.word);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.8;
+                utterance.pitch = 1;
+                speechSynthesis.speak(utterance);
+            } else {
+                showToast("Speech synthesis not supported in this browser", "error");
+            }
+        }
+
+        // Vocabulary Quiz Functions
+        function generateVocabQuizQuestions() {
+            vocabQuizQuestions = [];
+            
+            // Create a shuffled copy of all vocabulary words
+            const shuffledVocab = [...vocabularyData];
+            
+            // Fisher-Yates shuffle algorithm to randomize all words
+            for (let i = shuffledVocab.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffledVocab[i], shuffledVocab[j]] = [shuffledVocab[j], shuffledVocab[i]];
+            }
+            
+            // Generate questions for all 57 words
+            shuffledVocab.forEach(correctWord => {
+                // Create wrong options
+                const wrongOptions = [];
+                while (wrongOptions.length < 3) {
+                    const wrongIndex = Math.floor(Math.random() * vocabularyData.length);
+                    const wrongWord = vocabularyData[wrongIndex];
+                    if (wrongWord.word !== correctWord.word && !wrongOptions.includes(wrongWord.definition)) {
+                        wrongOptions.push(wrongWord.definition);
+                    }
+                }
+                
+                // Create options array with correct answer
+                const options = [...wrongOptions, correctWord.definition];
+                
+                // Shuffle options using Fisher-Yates algorithm
+                for (let i = options.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [options[i], options[j]] = [options[j], options[i]];
+                }
+                
+                // Find the correct index after shuffle
+                const correctIndex = options.indexOf(correctWord.definition);
+                
+                vocabQuizQuestions.push({
+                    word: correctWord.word,
+                    ipa: correctWord.ipa,
+                    type: correctWord.type,
+                    options: options,
+                    correct: correctIndex,
+                    explanation: `"${correctWord.word}" có nghĩa là: ${correctWord.definition}`
+                });
+            });
+        }
+
+        function startVocabQuiz() {
+            generateVocabQuizQuestions();
+            currentVocabQuiz = 0;
+            vocabQuizScore = 0;
+            vocabQuizAnswers = [];
+            
+            document.getElementById('vocab-quiz-section').classList.remove('hidden');
+            document.getElementById('vocab-quiz-results').classList.add('hidden');
+            document.getElementById('vocab-quiz-container').classList.remove('hidden');
+            document.getElementById('vocab-quiz-next').classList.remove('hidden');
+            
+            showVocabQuizQuestion();
+        }
+
+        function showVocabQuizQuestion() {
+            if (currentVocabQuiz >= vocabQuizQuestions.length) {
+                showVocabQuizResults();
+                return;
+            }
+            
+            const question = vocabQuizQuestions[currentVocabQuiz];
+            const container = document.getElementById('vocab-quiz-container');
+            
+            container.innerHTML = `
+                <div class="bg-white rounded-xl p-8 shadow-lg">
+                    <div class="text-center mb-8">
+                        <h4 class="text-2xl font-bold text-gray-800 mb-4">Từ "${question.word}" có nghĩa là gì?</h4>
+                        <div class="flex justify-center items-center space-x-4 mb-6">
+                            <p class="text-lg font-mono text-blue-600">${question.ipa}</p>
+                            <button onclick="pronounceQuizWord('${question.word}')" class="bg-blue-100 hover:bg-blue-200 rounded-full p-2 transition-all duration-300">
+                                <svg class="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="grid gap-4">
+                        ${question.options.map((option, index) => `
+                            <button class="vocab-quiz-option p-4 border-2 border-gray-200 rounded-lg text-left hover:border-orange-300 transition-all font-medium" 
+                                    onclick="selectVocabQuizAnswer(${index})" data-option="${index}">
+                                <span class="font-bold text-orange-600">${String.fromCharCode(65 + index)}.</span> ${option}
+                            </button>
+                        `).join('')}
+                    </div>
+                    
+                    <div id="vocab-quiz-explanation" class="hidden mt-6 p-4 bg-blue-50 rounded-lg">
+                        <h5 class="font-semibold text-blue-800 mb-2">💡 Giải thích:</h5>
+                        <p class="text-blue-700">${question.explanation}</p>
+                    </div>
+                </div>
+            `;
+            
+            // Update progress
+            document.getElementById('current-vocab-quiz').textContent = currentVocabQuiz + 1;
+            document.getElementById('vocab-quiz-score').textContent = vocabQuizScore;
+            updateVocabQuizProgress();
+        }
+
+        function selectVocabQuizAnswer(selectedIndex) {
+            const question = vocabQuizQuestions[currentVocabQuiz];
+            const options = document.querySelectorAll('.vocab-quiz-option');
+            const isCorrect = selectedIndex === question.correct;
+            
+            // Disable all options
+            options.forEach((option, index) => {
+                option.onclick = null;
+                option.classList.remove('hover:border-orange-300');
+                
+                if (index === question.correct) {
+                    option.classList.add('correct', 'correct-answer');
+                } else if (index === selectedIndex) {
+                    option.classList.add('incorrect', 'wrong-answer');
+                }
+            });
+            
+            // Show explanation
+            document.getElementById('vocab-quiz-explanation').classList.remove('hidden');
+            
+            // Play sound and update score
+            if (isCorrect) {
+                vocabQuizScore++;
+                playCorrectSound();
+                document.getElementById('vocab-quiz-score').textContent = vocabQuizScore;
+            } else {
+                playWrongSound();
+            }
+            
+            vocabQuizAnswers.push(selectedIndex);
+            document.getElementById('vocab-quiz-next').disabled = false;
+        }
+
+        function nextVocabQuizQuestion() {
+            currentVocabQuiz++;
+            document.getElementById('vocab-quiz-next').disabled = true;
+            
+            if (currentVocabQuiz >= vocabQuizQuestions.length) {
+                showVocabQuizResults();
+            } else {
+                showVocabQuizQuestion();
+            }
+        }
+
+        function showVocabQuizResults() {
+            document.getElementById('vocab-quiz-container').classList.add('hidden');
+            document.getElementById('vocab-quiz-next').classList.add('hidden');
+            document.getElementById('vocab-quiz-results').classList.remove('hidden');
+            
+            const percentage = Math.round((vocabQuizScore / 57) * 100);
+            
+            document.getElementById('vocab-final-score').textContent = `${vocabQuizScore}/57`;
+            document.getElementById('vocab-percentage').textContent = `${percentage}%`;
+            
+            let feedback = "";
+            let emoji = "";
+            
+            if (percentage >= 90) {
+                feedback = "🌟 Xuất sắc! Bạn đã thành thạo từ vựng bài này!";
+                emoji = "🎉";
+                playVictorySound();
+            } else if (percentage >= 80) {
+                feedback = "👏 Rất tốt! Bạn đã nắm vững hầu hết từ vựng!";
+                emoji = "🎊";
+                playGoodSound();
+            } else if (percentage >= 70) {
+                feedback = "👍 Khá tốt! Hãy ôn lại một số từ và thử lần nữa!";
+                emoji = "💪";
+                playOkaySound();
+            } else if (percentage >= 60) {
+                feedback = "📚 Cần luyện tập thêm! Hãy xem lại flashcard và thử lại!";
+                emoji = "🤔";
+                playTryAgainSound();
+            } else {
+                feedback = "💡 Hãy học kỹ từ vựng trước khi làm bài kiểm tra nhé!";
+                emoji = "📖";
+                playStudyMoreSound();
+            }
+            
+            document.getElementById('vocab-quiz-feedback').innerHTML = `${emoji} ${feedback}`;
+        }
+
+        function restartVocabQuiz() {
+            startVocabQuiz();
+        }
+
+        function hideVocabQuiz() {
+            document.getElementById('vocab-quiz-section').classList.add('hidden');
+        }
+
+        function updateVocabQuizProgress() {
+            const progress = ((currentVocabQuiz + 1) / 57) * 100;
+            document.getElementById('vocab-quiz-progress').style.width = progress + '%';
+        }
+
+        function pronounceQuizWord(word) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(word);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.8;
+                utterance.pitch = 1;
+                speechSynthesis.speak(utterance);
+            }
+        }
+
+        // Sound Effects Functions
+        function playCorrectSound() {
+            // Create exciting "success" sound with multiple tones
+            if (typeof AudioContext !== 'undefined' || typeof webkitAudioContext !== 'undefined') {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Main success melody - ascending notes
+                const notes = [523.25, 659.25, 783.99]; // C5, E5, G5
+                
+                notes.forEach((freq, index) => {
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.type = 'sine';
+                    oscillator.frequency.setValueAtTime(freq, audioContext.currentTime + index * 0.1);
+                    
+                    gainNode.gain.setValueAtTime(0, audioContext.currentTime + index * 0.1);
+                    gainNode.gain.linearRampToValueAtTime(0.4, audioContext.currentTime + index * 0.1 + 0.05);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + index * 0.1 + 0.3);
+                    
+                    oscillator.start(audioContext.currentTime + index * 0.1);
+                    oscillator.stop(audioContext.currentTime + index * 0.1 + 0.3);
+                });
+                
+                // Add sparkle effect with higher frequencies
+                setTimeout(() => {
+                    for (let i = 0; i < 5; i++) {
+                        const sparkleOsc = audioContext.createOscillator();
+                        const sparkleGain = audioContext.createGain();
+                        
+                        sparkleOsc.connect(sparkleGain);
+                        sparkleGain.connect(audioContext.destination);
+                        
+                        sparkleOsc.type = 'sine';
+                        sparkleOsc.frequency.setValueAtTime(1200 + Math.random() * 800, audioContext.currentTime);
+                        
+                        sparkleGain.gain.setValueAtTime(0.15, audioContext.currentTime);
+                        sparkleGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+                        
+                        sparkleOsc.start(audioContext.currentTime + i * 0.05);
+                        sparkleOsc.stop(audioContext.currentTime + i * 0.05 + 0.2);
+                    }
+                }, 200);
+            }
+        }
+
+        function playWrongSound() {
+            // Create dramatic "wrong" sound with descending tones
+            if (typeof AudioContext !== 'undefined' || typeof webkitAudioContext !== 'undefined') {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Main wrong sound - descending dramatic notes
+                const wrongNotes = [400, 300, 200]; // Descending frequencies
+                
+                wrongNotes.forEach((freq, index) => {
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.type = 'sawtooth'; // More dramatic sound
+                    oscillator.frequency.setValueAtTime(freq, audioContext.currentTime + index * 0.15);
+                    
+                    gainNode.gain.setValueAtTime(0, audioContext.currentTime + index * 0.15);
+                    gainNode.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + index * 0.15 + 0.05);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + index * 0.15 + 0.4);
+                    
+                    oscillator.start(audioContext.currentTime + index * 0.15);
+                    oscillator.stop(audioContext.currentTime + index * 0.15 + 0.4);
+                });
+                
+                // Add "buzzer" effect
+                setTimeout(() => {
+                    const buzzer = audioContext.createOscillator();
+                    const buzzerGain = audioContext.createGain();
+                    
+                    buzzer.connect(buzzerGain);
+                    buzzerGain.connect(audioContext.destination);
+                    
+                    buzzer.type = 'square';
+                    buzzer.frequency.setValueAtTime(150, audioContext.currentTime);
+                    
+                    buzzerGain.gain.setValueAtTime(0.2, audioContext.currentTime);
+                    buzzerGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.6);
+                    
+                    buzzer.start(audioContext.currentTime);
+                    buzzer.stop(audioContext.currentTime + 0.6);
+                }, 300);
+            }
+        }
+
+        function playVictorySound() {
+            // Victory fanfare
+            if (typeof AudioContext !== 'undefined' || typeof webkitAudioContext !== 'undefined') {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+                
+                notes.forEach((freq, index) => {
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
+                    gainNode.gain.setValueAtTime(0.15, audioContext.currentTime + index * 0.15);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + index * 0.15 + 0.3);
+                    
+                    oscillator.start(audioContext.currentTime + index * 0.15);
+                    oscillator.stop(audioContext.currentTime + index * 0.15 + 0.3);
+                });
+            }
+        }
+
+        function playGoodSound() {
+            // Good job sound
+            if (typeof AudioContext !== 'undefined' || typeof webkitAudioContext !== 'undefined') {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.setValueAtTime(600, audioContext.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(800, audioContext.currentTime + 0.2);
+                
+                gainNode.gain.setValueAtTime(0.25, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.4);
+            }
+        }
+
+        function playOkaySound() {
+            // Okay sound
+            if (typeof AudioContext !== 'undefined' || typeof webkitAudioContext !== 'undefined') {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.setValueAtTime(400, audioContext.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(500, audioContext.currentTime + 0.3);
+                
+                gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.3);
+            }
+        }
+
+        function playTryAgainSound() {
+            // Try again sound
+            if (typeof AudioContext !== 'undefined' || typeof webkitAudioContext !== 'undefined') {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.setValueAtTime(300, audioContext.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(250, audioContext.currentTime + 0.4);
+                
+                gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.4);
+            }
+        }
+
+        function playStudyMoreSound() {
+            // Study more sound
+            if (typeof AudioContext !== 'undefined' || typeof webkitAudioContext !== 'undefined') {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.setValueAtTime(250, audioContext.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(200, audioContext.currentTime + 0.5);
+                
+                gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.5);
+            }
+        }
+
+        // Grammar Quiz Sound Effects - Louder and more exciting
+        function playGrammarCorrectSound() {
+            // Super exciting correct sound for grammar - LOUD and celebratory
+            if (typeof AudioContext !== 'undefined' || typeof webkitAudioContext !== 'undefined') {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Main celebration melody - ascending triumphant notes
+                const celebrationNotes = [523.25, 659.25, 783.99, 1046.50, 1318.51]; // C5, E5, G5, C6, E6
+                
+                celebrationNotes.forEach((freq, index) => {
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.type = 'sine';
+                    oscillator.frequency.setValueAtTime(freq, audioContext.currentTime + index * 0.08);
+                    
+                    gainNode.gain.setValueAtTime(0, audioContext.currentTime + index * 0.08);
+                    gainNode.gain.linearRampToValueAtTime(0.7, audioContext.currentTime + index * 0.08 + 0.04); // Much louder
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + index * 0.08 + 0.35);
+                    
+                    oscillator.start(audioContext.currentTime + index * 0.08);
+                    oscillator.stop(audioContext.currentTime + index * 0.08 + 0.35);
+                });
+                
+                // Add powerful bass drum effect
+                setTimeout(() => {
+                    const bass = audioContext.createOscillator();
+                    const bassGain = audioContext.createGain();
+                    
+                    bass.connect(bassGain);
+                    bassGain.connect(audioContext.destination);
+                    
+                    bass.type = 'sine';
+                    bass.frequency.setValueAtTime(80, audioContext.currentTime);
+                    bass.frequency.exponentialRampToValueAtTime(40, audioContext.currentTime + 0.3);
+                    
+                    bassGain.gain.setValueAtTime(0.8, audioContext.currentTime); // Very loud bass
+                    bassGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                    
+                    bass.start(audioContext.currentTime);
+                    bass.stop(audioContext.currentTime + 0.3);
+                }, 100);
+                
+                // Add explosive sparkle effects - much louder
+                setTimeout(() => {
+                    for (let i = 0; i < 8; i++) {
+                        const sparkleOsc = audioContext.createOscillator();
+                        const sparkleGain = audioContext.createGain();
+                        
+                        sparkleOsc.connect(sparkleGain);
+                        sparkleGain.connect(audioContext.destination);
+                        
+                        sparkleOsc.type = 'sine';
+                        sparkleOsc.frequency.setValueAtTime(1500 + Math.random() * 1000, audioContext.currentTime);
+                        
+                        sparkleGain.gain.setValueAtTime(0.5, audioContext.currentTime); // Much louder sparkles
+                        sparkleGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.25);
+                        
+                        sparkleOsc.start(audioContext.currentTime + i * 0.03);
+                        sparkleOsc.stop(audioContext.currentTime + i * 0.03 + 0.25);
+                    }
+                }, 250);
+                
+                // Add final triumphant chord
+                setTimeout(() => {
+                    const chordNotes = [523.25, 659.25, 783.99]; // C major chord
+                    chordNotes.forEach(freq => {
+                        const chordOsc = audioContext.createOscillator();
+                        const chordGain = audioContext.createGain();
+                        
+                        chordOsc.connect(chordGain);
+                        chordGain.connect(audioContext.destination);
+                        
+                        chordOsc.type = 'sine';
+                        chordOsc.frequency.setValueAtTime(freq, audioContext.currentTime);
+                        
+                        chordGain.gain.setValueAtTime(0.6, audioContext.currentTime); // Loud final chord
+                        chordGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.8);
+                        
+                        chordOsc.start(audioContext.currentTime);
+                        chordOsc.stop(audioContext.currentTime + 0.8);
+                    });
+                }, 500);
+            }
+        }
+
+        function playGrammarWrongSound() {
+            // Dramatic wrong sound for grammar - LOUD and attention-grabbing
+            if (typeof AudioContext !== 'undefined' || typeof webkitAudioContext !== 'undefined') {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Main dramatic descending sound - much louder
+                const wrongNotes = [500, 400, 300, 200, 150]; // Longer descending sequence
+                
+                wrongNotes.forEach((freq, index) => {
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.type = 'sawtooth'; // More dramatic sound
+                    oscillator.frequency.setValueAtTime(freq, audioContext.currentTime + index * 0.12);
+                    
+                    gainNode.gain.setValueAtTime(0, audioContext.currentTime + index * 0.12);
+                    gainNode.gain.linearRampToValueAtTime(0.6, audioContext.currentTime + index * 0.12 + 0.05); // Much louder
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + index * 0.12 + 0.4);
+                    
+                    oscillator.start(audioContext.currentTime + index * 0.12);
+                    oscillator.stop(audioContext.currentTime + index * 0.12 + 0.4);
+                });
+                
+                // Add powerful "BZZZZT" buzzer effect
+                setTimeout(() => {
+                    const buzzer = audioContext.createOscillator();
+                    const buzzerGain = audioContext.createGain();
+                    
+                    buzzer.connect(buzzerGain);
+                    buzzerGain.connect(audioContext.destination);
+                    
+                    buzzer.type = 'square';
+                    buzzer.frequency.setValueAtTime(120, audioContext.currentTime);
+                    buzzer.frequency.linearRampToValueAtTime(80, audioContext.currentTime + 0.8);
+                    
+                    buzzerGain.gain.setValueAtTime(0.7, audioContext.currentTime); // Very loud buzzer
+                    buzzerGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.8);
+                    
+                    buzzer.start(audioContext.currentTime);
+                    buzzer.stop(audioContext.currentTime + 0.8);
+                }, 400);
+                
+                // Add dramatic "crash" effect
+                setTimeout(() => {
+                    for (let i = 0; i < 6; i++) {
+                        const crashOsc = audioContext.createOscillator();
+                        const crashGain = audioContext.createGain();
+                        
+                        crashOsc.connect(crashGain);
+                        crashGain.connect(audioContext.destination);
+                        
+                        crashOsc.type = 'square';
+                        crashOsc.frequency.setValueAtTime(100 + Math.random() * 200, audioContext.currentTime);
+                        
+                        crashGain.gain.setValueAtTime(0.4, audioContext.currentTime); // Loud crash sounds
+                        crashGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                        
+                        crashOsc.start(audioContext.currentTime + i * 0.05);
+                        crashOsc.stop(audioContext.currentTime + i * 0.05 + 0.3);
+                    }
+                }, 200);
+            }
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Hide home button initially since we start on home screen
+            document.getElementById('home-button').classList.add('hidden');
+            initializeApp();
+        });
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'995b5972f71993d2',t:'MTc2MTY2NDExNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
