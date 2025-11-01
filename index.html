@@ -196,15 +196,15 @@
     </style>
   <style>@view-transition { navigation: auto; }</style>
  </head>
- <body class="min-h-full"><!-- Home Button - Fixed Position --> <button id="home-button" onclick="showSection('home')" class="fixed top-4 left-4 z-50 bg-white hover:bg-gray-50 text-gray-700 hover:text-gray-900 p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200">
+ <body class="min-h-full"><!-- Website Home Button - Fixed Position --> <a href="https://nckhthptnk.github.io/tienganh11/" class="fixed top-4 left-4 z-50 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 border border-blue-700" title="Về trang chủ website">
    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-7a1 1 0 011-1h2a1 1 0 011 1v7a1 1 0 001 1m-6 0h6" />
+   </svg></a> <!-- Section Home Button - Fixed Position (for internal navigation) --> <button id="section-home-button" onclick="showSection('home')" class="fixed top-4 left-16 z-50 bg-white hover:bg-gray-50 text-gray-700 hover:text-gray-900 p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 hidden" title="Về trang chủ bài học">
+   <svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
    </svg></button>
   <main class="min-h-full p-3 sm:p-4 md:p-6" id="main-content">
    <div class="max-w-7xl mx-auto"><!-- Home Screen -->
     <div id="home-screen" class="space-y-8"><!-- Header -->
-     <div class="text-center relative px-2 sm:px-4"><!-- Home button next to title - hidden on mobile home screen --> <button onclick="showSection('home')" class="hidden sm:block absolute left-0 top-0 bg-white hover:bg-gray-50 text-gray-700 hover:text-gray-900 p-2 sm:p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200">
-       <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-7a1 1 0 011-1h2a1 1 0 011 1v7a1 1 0 001 1m-6 0h6" />
-       </svg></button>
+     <div class="text-center relative px-2 sm:px-4">
       <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 px-8 sm:px-0" id="unit-title">Unit 3: Global Warming &amp; Ecosystems</h1>
       <p class="text-sm sm:text-base lg:text-lg text-gray-600 px-4 sm:px-0" id="welcome-message">Chào mừng bạn đến với bài học tiếng Anh cùng Mega Master 11 nhé!</p>
      </div><!-- Progress Section -->
@@ -303,7 +303,7 @@
        <div class="flex-1 pr-4">
         <h2 class="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800">Thẻ ghi nhớ từ vựng</h2>
         <p class="text-sm sm:text-base text-gray-600 mt-1 sm:mt-2">Học 57 từ vựng về Global Warming &amp; Ecosystems</p>
-       </div><button onclick="showSection('home')" class="text-gray-500 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100 transition-all flex-shrink-0">
+       </div><button onclick="showSection('home')" class="text-gray-500 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100 transition-all flex-shrink-0" title="Đóng">
         <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg></button>
       </div><!-- Progress Section -->
@@ -316,31 +316,31 @@
        <div class="flex justify-between text-xs sm:text-sm text-gray-600 mt-2"><span>Bắt đầu học</span> <span>Hoàn thành</span>
        </div>
       </div><!-- Flashcard Container -->
-      <div class="max-w-sm sm:max-w-md lg:max-w-lg mx-auto">
+      <div class="max-w-xs sm:max-w-sm lg:max-w-md mx-auto">
        <div class="flip-card flashcard mb-4 sm:mb-6" id="flashcard">
         <div class="flip-card-inner relative w-full"><!-- Front of card -->
-         <div class="flip-card-front absolute inset-0 bg-blue-600 text-white rounded-xl shadow-lg" style="min-height: 200px;">
+         <div class="flip-card-front absolute inset-0 bg-blue-600 text-white rounded-xl shadow-lg" style="min-height: 180px;">
           <div class="p-3 sm:p-4 h-full flex flex-col justify-center items-center text-center"><!-- Word -->
-           <div class="mb-3 sm:mb-4">
-            <h3 class="text-xl sm:text-2xl font-bold mb-2 sm:mb-3" id="vocab-word">grassland</h3>
-            <p class="text-xs sm:text-sm mb-1 sm:mb-2 font-mono" id="vocab-ipa">/ˈɡrɑːslænd/</p>
-            <p class="text-xs opacity-90" id="vocab-type">noun</p>
-           </div><!-- Pronunciation button --> <button class="bg-white/20 hover:bg-white/30 rounded-full p-2 transition-all duration-300 mb-3 sm:mb-4" id="pronounce-btn" onclick="pronounceWord()">
-            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewbox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+           <div class="mb-3">
+            <h3 class="text-lg sm:text-xl font-bold mb-2" id="vocab-word">grassland</h3>
+            <p class="text-xs font-mono" id="vocab-ipa">/ˈɡrɑːslænd/</p>
+            <p class="text-xs opacity-90 mt-1" id="vocab-type">noun</p>
+           </div><!-- Pronunciation button --> <button class="bg-white/20 hover:bg-white/30 rounded-full p-2 transition-all duration-300 mb-3" id="pronounce-btn" onclick="pronounceWord()">
+            <svg class="w-4 h-4" fill="currentColor" viewbox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
             </svg></button> <!-- Instruction -->
            <p class="text-xs opacity-80">Nhấn để xem nghĩa</p>
           </div>
          </div><!-- Back of card -->
-         <div class="flip-card-back absolute inset-0 bg-green-600 text-white rounded-xl shadow-lg" style="min-height: 200px;">
+         <div class="flip-card-back absolute inset-0 bg-green-600 text-white rounded-xl shadow-lg" style="min-height: 180px;">
           <div class="p-3 sm:p-4 h-full flex flex-col justify-center"><!-- Word (smaller on back) -->
-           <div class="text-center mb-3 sm:mb-4">
-            <h3 class="text-base sm:text-lg font-bold" id="vocab-word-back">grassland</h3>
+           <div class="text-center mb-3">
+            <h3 class="text-sm sm:text-base font-bold" id="vocab-word-back">grassland</h3>
             <p class="text-xs opacity-90" id="vocab-type-back">noun</p>
            </div><!-- Definition -->
-           <div class="mb-3 sm:mb-4 bg-white/10 rounded-lg p-2 sm:p-3">
+           <div class="mb-3 bg-white/10 rounded-lg p-2">
             <p class="text-xs leading-relaxed" id="vocab-definition">Vùng đất rộng lớn được bao phủ bởi cỏ</p>
            </div><!-- Example -->
-           <div class="bg-white/10 rounded-lg p-2 sm:p-3">
+           <div class="bg-white/10 rounded-lg p-2">
             <p class="text-xs italic leading-relaxed" id="vocab-example">The African grasslands are home to many wild animals.</p>
            </div>
           </div>
@@ -394,7 +394,7 @@
     <div id="reading-section" class="hidden">
      <div class="bg-white rounded-xl p-4 sm:p-6 shadow-lg">
       <div class="flex justify-between items-center mb-4 sm:mb-6">
-       <h2 class="text-xl sm:text-2xl font-bold">Bài đọc hiểu</h2><button onclick="showSection('home')" class="text-gray-600 hover:text-gray-800 p-2 rounded-full hover:bg-gray-100 transition-all">
+       <h2 class="text-xl sm:text-2xl font-bold">Bài đọc hiểu</h2><button onclick="showSection('home')" class="text-gray-600 hover:text-gray-800 p-2 rounded-full hover:bg-gray-100 transition-all" title="Đóng">
         <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg></button>
       </div>
@@ -414,7 +414,7 @@
     <div id="grammar-section" class="hidden">
      <div class="bg-white rounded-xl p-4 sm:p-6 shadow-lg">
       <div class="flex justify-between items-center mb-4 sm:mb-6">
-       <h2 class="text-xl sm:text-2xl font-bold">Ngữ pháp</h2><button onclick="showSection('home')" class="text-gray-600 hover:text-gray-800 p-2 rounded-full hover:bg-gray-100 transition-all">
+       <h2 class="text-xl sm:text-2xl font-bold">Ngữ pháp</h2><button onclick="showSection('home')" class="text-gray-600 hover:text-gray-800 p-2 rounded-full hover:bg-gray-100 transition-all" title="Đóng">
         <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg></button>
       </div><!-- Grammar Navigation -->
@@ -1225,14 +1225,14 @@
                 document.getElementById(s).classList.add('hidden');
             });
             
-            const homeButton = document.getElementById('home-button');
+            const sectionHomeButton = document.getElementById('section-home-button');
             
             if (section === 'home') {
                 document.getElementById('home-screen').classList.remove('hidden');
-                homeButton.classList.add('hidden'); // Hide home button on home screen
+                sectionHomeButton.classList.add('hidden'); // Hide section home button on home screen
             } else {
                 document.getElementById(section + '-section').classList.remove('hidden');
-                homeButton.classList.remove('hidden'); // Show home button on other sections
+                sectionHomeButton.classList.remove('hidden'); // Show section home button on other sections
             }
         }
 
@@ -2155,10 +2155,10 @@
 
         // Initialize when DOM is loaded
         document.addEventListener('DOMContentLoaded', () => {
-            // Hide home button initially since we start on home screen
-            document.getElementById('home-button').classList.add('hidden');
+            // Hide section home button initially since we start on home screen
+            document.getElementById('section-home-button').classList.add('hidden');
             initializeApp();
         });
     </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'995b9ad232a3e60e',t:'MTc2MTY2Njc5My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'997bc48ce71e3db0',t:'MTc2MjAwNDA0Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
