@@ -1431,11 +1431,17 @@
       resultDiv.style.backgroundColor = percentage >= 70 ? '#86efac' : '#fca5a5';
       resultDiv.classList.remove('hidden');
 
-      // Save reading progress
+      // Cập nhật hiển thị ngay lập tức
       const vocabProg = userProgress?.vocabulary_progress || 0;
       const grammarProg = userProgress?.grammar_progress || 0;
       const totalProg = Math.round((vocabProg + percentage + grammarProg) / 3);
+      
+      const readingEl = document.getElementById('reading-progress');
+      if (readingEl) readingEl.textContent = `${percentage}%`;
+      const totalEl = document.getElementById('total-progress');
+      if (totalEl) totalEl.textContent = `${totalProg}%`;
 
+      // Save reading progress
       if (userProgress && userProgress.__backendId) {
         const progressData = {
           id: userProgress.id,
@@ -1451,27 +1457,21 @@
         };
         const result = await window.dataSdk.update(progressData);
         if (result.isOk) {
-          // Cập nhật userProgress ngay lập tức
           userProgress = progressData;
-          updateProgressDisplay();
         }
       } else {
         const progressData = {
           id: "user_progress",
-          vocabulary_progress: 0,
+          vocabulary_progress: vocabProg,
           reading_progress: percentage,
-          grammar_progress: 0,
-          total_progress: Math.round(percentage / 3),
+          grammar_progress: grammarProg,
+          total_progress: totalProg,
           vocabulary_completed: 0,
           reading_score: score,
           grammar_score: 0,
           last_updated: new Date().toISOString()
         };
-        const result = await window.dataSdk.create(progressData);
-        if (result.isOk) {
-          // Dữ liệu sẽ được cập nhật qua onDataChanged
-          updateProgressDisplay();
-        }
+        await window.dataSdk.create(progressData);
       }
 
       this.disabled = true;
@@ -1656,11 +1656,17 @@
       
       resultDiv.classList.remove('hidden');
 
-      // Save grammar progress
+      // Cập nhật hiển thị ngay lập tức
       const vocabProg = userProgress?.vocabulary_progress || 0;
       const readingProg = userProgress?.reading_progress || 0;
       const totalProg = Math.round((vocabProg + readingProg + percentage) / 3);
+      
+      const grammarEl = document.getElementById('grammar-progress');
+      if (grammarEl) grammarEl.textContent = `${percentage}%`;
+      const totalEl = document.getElementById('total-progress');
+      if (totalEl) totalEl.textContent = `${totalProg}%`;
 
+      // Save grammar progress
       if (userProgress && userProgress.__backendId) {
         const progressData = {
           id: userProgress.id,
@@ -1676,27 +1682,21 @@
         };
         const result = await window.dataSdk.update(progressData);
         if (result.isOk) {
-          // Cập nhật userProgress ngay lập tức
           userProgress = progressData;
-          updateProgressDisplay();
         }
       } else {
         const progressData = {
           id: "user_progress",
-          vocabulary_progress: 0,
-          reading_progress: 0,
+          vocabulary_progress: vocabProg,
+          reading_progress: readingProg,
           grammar_progress: percentage,
-          total_progress: Math.round(percentage / 3),
+          total_progress: totalProg,
           vocabulary_completed: 0,
           reading_score: 0,
           grammar_score: finalScore,
           last_updated: new Date().toISOString()
         };
-        const result = await window.dataSdk.create(progressData);
-        if (result.isOk) {
-          // Dữ liệu sẽ được cập nhật qua onDataChanged
-          updateProgressDisplay();
-        }
+        await window.dataSdk.create(progressData);
       }
 
       // Scroll to result
@@ -1857,5 +1857,5 @@
     initGrammarQuiz();
     onConfigChange(config);
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99b5a31c9509fdcc',t:'MTc2MjYxMDg1MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99b5b058b3b6fd1a',t:'MTc2MjYxMTM5NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
