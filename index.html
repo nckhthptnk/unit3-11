@@ -380,7 +380,7 @@
       <div id="reading-text" class="text-sm sm:text-base md:text-lg leading-relaxed space-y-3 sm:space-y-4 mb-6 sm:mb-8">
        <p><span class="highlight">Global warming</span> is one of the most <u>pressing</u> environmental issues facing humanity today. The Earth's average temperature has risen significantly over the past century, primarily due to increased <span class="highlight">greenhouse gas emissions</span> from human activities. <u>These</u> emissions, particularly carbon dioxide and methane, trap heat in the atmosphere, creating what scientists call the <span class="highlight">greenhouse effect</span>.</p>
        <p>The consequences of <span class="highlight">climate change</span> are already visible worldwide. Polar ice caps are melting at an <u>alarming</u> rate, causing sea levels to rise and threatening coastal communities. Extreme weather events, such as hurricanes, droughts, and floods, have become more frequent and severe. Many <span class="highlight">ecosystems</span> are struggling to adapt to these rapid changes, leading to the extinction of numerous plant and animal species.</p>
-       <p><span class="highlight">Deforestation</span> compounds the problem by removing trees that naturally absorb carbon dioxide from the atmosphere. <strong>[I]</strong> The Amazon rainforest, often called the <u>"lungs of the Earth,"</u> has lost vast areas to logging and agriculture. <strong>[II]</strong> <u>This destruction not only releases stored carbon but also eliminates crucial habitats for countless species.</u> <strong>[III]</strong> Additionally, the burning of <span class="highlight">fossil fuels</span> for energy production continues to be the largest contributor to atmospheric <span class="highlight">pollution</span>. <strong>[IV]</strong></p>
+       <p><span class="highlight">Deforestation</span> compounds the problem by removing trees that naturally absorb carbon dioxide from the atmosphere. <strong>[I]</strong> The Amazon rainforest, often called the <u>"lungs of the Earth,"</u> has lost vast areas to logging and agriculture. <strong>[II]</strong> Additionally, the burning of <span class="highlight">fossil fuels</span> for energy production continues to be the largest contributor to atmospheric <span class="highlight">pollution</span>. <strong>[III]</strong> Scientists warn that if current trends continue, we may reach irreversible tipping points in the climate system. <strong>[IV]</strong></p>
        <p>However, there is hope. Many countries are now investing in <span class="highlight">renewable energy</span> sources such as solar and wind power. Individuals can contribute by reducing their carbon footprint through simple actions like using public transportation, recycling, and consuming less meat. Scientists emphasize that <u>if we act now, we can still mitigate the worst effects of global warming and preserve our planet for future generations.</u> The key is immediate and collective action from governments, businesses, and individuals worldwide.</p>
       </div>
      </div>
@@ -737,9 +737,9 @@
         correct: 1
       },
       {
-        question: "Question 2: What does the word <u>'these'</u> in paragraph 2 refer to?",
-        options: ["A. consequences", "B. ice caps", "C. sea levels", "D. extreme weather events"],
-        correct: 3
+        question: "Question 2: What does the word <u>'These'</u> in paragraph 1 refer to?",
+        options: ["A. human activities", "B. greenhouse gas emissions", "C. carbon dioxide and methane", "D. scientists"],
+        correct: 1
       },
       {
         question: "Question 3: The word <u>'alarming'</u> in paragraph 2 is OPPOSITE in meaning to ________________.",
@@ -752,9 +752,9 @@
         correct: 3
       },
       {
-        question: "Question 5: Where in the passage does the following sentence best fit? <u>'This destruction not only releases stored carbon but also eliminates crucial habitats for countless species.'</u>",
-        options: ["[I]", "[II]", "[III]", "[IV]"],
-        correct: 2
+        question: "Question 5: Where in paragraph 3 does the following sentence best fit? <br><em>'This destruction not only releases stored carbon but also eliminates crucial habitats for countless species.'</em>",
+        options: ["A. [I]", "B. [II]", "C. [III]", "D. [IV]"],
+        correct: 1
       },
       {
         question: "Question 6: Which of the following is TRUE according to the passage?",
@@ -762,12 +762,12 @@
         correct: 1
       },
       {
-        question: "Question 7: Which of the following best paraphrases the underlined sentence in paragraph 4? <u>'If we act now, we can still mitigate the worst effects of global warming and preserve our planet for future generations.'</u>",
-        options: ["A. Taking immediate action can help reduce the most severe impacts of climate change and protect Earth for our children.", "B. Not until we stop all human activities can global warming be completely prevented.", "C. Climate change can be solved only if governments take full responsibility without individual help.", "D. Acting now will make all environmental problems disappear immediately and permanently."],
-        correct: 0
+        question: "Question 7: Which of the following best summarizes the main message of the passage?",
+        options: ["A. Global warming is caused only by deforestation and cannot be stopped.", "B. Climate change is a serious problem, but collective action can still reduce its worst effects.", "C. Renewable energy alone can completely solve all environmental problems.", "D. It is too late to do anything about global warming and we should accept it."],
+        correct: 1
       },
       {
-        question: "Question 8: Which can be inferred from the passage?",
+        question: "Question 8: Which of the following can be inferred from the passage?",
         options: ["A. Scientists believe it is too late to reverse the effects of global warming.", "B. Deforestation has no significant impact on atmospheric carbon dioxide levels.", "C. Renewable energy sources alone can solve all environmental problems instantly.", "D. Collective action from governments, businesses, and individuals is necessary to address climate change."],
         correct: 3
       }
@@ -924,8 +924,9 @@
       onDataChanged(data) {
         if (data.length > 0) {
           userProgress = data[0];
-          updateProgressDisplay();
         }
+        // Luôn cập nhật hiển thị sau khi nhận dữ liệu
+        updateProgressDisplay();
       }
     };
 
@@ -954,30 +955,33 @@
         last_updated: new Date().toISOString()
       };
 
-      if (userProgress) {
+      if (userProgress && userProgress.__backendId) {
         const result = await window.dataSdk.update({ ...progressData, __backendId: userProgress.__backendId });
         if (result.isOk) {
-          // Update display immediately after successful save
-          document.getElementById('vocab-progress').textContent = `${vocabProgress}%`;
-          document.getElementById('total-progress').textContent = `${totalProgress}%`;
+          // Cập nhật userProgress ngay lập tức để UI phản ánh ngay
+          userProgress = { ...progressData, __backendId: userProgress.__backendId };
         }
       } else {
         const result = await window.dataSdk.create(progressData);
-        if (result.isOk) {
-          // Update display immediately after successful save
-          document.getElementById('vocab-progress').textContent = `${vocabProgress}%`;
-          document.getElementById('total-progress').textContent = `${totalProgress}%`;
-        }
+        // Dữ liệu sẽ được cập nhật qua onDataChanged
       }
     }
 
     function updateProgressDisplay() {
-      if (userProgress) {
-        document.getElementById('total-progress').textContent = `${userProgress.total_progress || 0}%`;
-        document.getElementById('vocab-progress').textContent = `${userProgress.vocabulary_progress || 0}%`;
-        document.getElementById('reading-progress').textContent = `${userProgress.reading_progress || 0}%`;
-        document.getElementById('grammar-progress').textContent = `${userProgress.grammar_progress || 0}%`;
-      }
+      const totalProg = userProgress?.total_progress || 0;
+      const vocabProg = userProgress?.vocabulary_progress || 0;
+      const readingProg = userProgress?.reading_progress || 0;
+      const grammarProg = userProgress?.grammar_progress || 0;
+
+      const totalEl = document.getElementById('total-progress');
+      const vocabEl = document.getElementById('vocab-progress');
+      const readingEl = document.getElementById('reading-progress');
+      const grammarEl = document.getElementById('grammar-progress');
+
+      if (totalEl) totalEl.textContent = `${totalProg}%`;
+      if (vocabEl) vocabEl.textContent = `${vocabProg}%`;
+      if (readingEl) readingEl.textContent = `${readingProg}%`;
+      if (grammarEl) grammarEl.textContent = `${grammarProg}%`;
     }
 
     // Text-to-speech function
@@ -1041,6 +1045,18 @@
 
       document.getElementById('card-counter').textContent = `${currentCard + 1} / ${vocabularyCards.length}`;
       document.getElementById('vocab-progress-bar').style.width = `${((currentCard + 1) / vocabularyCards.length) * 100}%`;
+
+      // Cập nhật hiển thị tiến độ ngay lập tức
+      const vocabProgress = Math.round(((currentCard + 1) / vocabularyCards.length) * 100);
+      const vocabEl = document.getElementById('vocab-progress');
+      if (vocabEl) vocabEl.textContent = `${vocabProgress}%`;
+      
+      // Cập nhật tổng tiến độ
+      const readingProg = userProgress?.reading_progress || 0;
+      const grammarProg = userProgress?.grammar_progress || 0;
+      const totalProgress = Math.round((vocabProgress + readingProg + grammarProg) / 3);
+      const totalEl = document.getElementById('total-progress');
+      if (totalEl) totalEl.textContent = `${totalProgress}%`;
 
       saveProgress();
     }
@@ -1280,7 +1296,7 @@
       const grammarProg = userProgress?.grammar_progress || 0;
       const totalProg = Math.round((percentage + readingProg + grammarProg) / 3);
 
-      if (userProgress) {
+      if (userProgress && userProgress.__backendId) {
         const progressData = {
           id: userProgress.id,
           vocabulary_progress: percentage,
@@ -1295,8 +1311,9 @@
         };
         const result = await window.dataSdk.update(progressData);
         if (result.isOk) {
-          document.getElementById('vocab-progress').textContent = `${percentage}%`;
-          document.getElementById('total-progress').textContent = `${totalProg}%`;
+          // Cập nhật userProgress ngay lập tức
+          userProgress = progressData;
+          updateProgressDisplay();
         }
       } else {
         const progressData = {
@@ -1312,8 +1329,8 @@
         };
         const result = await window.dataSdk.create(progressData);
         if (result.isOk) {
-          document.getElementById('vocab-progress').textContent = `${percentage}%`;
-          document.getElementById('total-progress').textContent = `${Math.round(percentage / 3)}%`;
+          // Dữ liệu sẽ được cập nhật qua onDataChanged
+          updateProgressDisplay();
         }
       }
       
@@ -1419,7 +1436,7 @@
       const grammarProg = userProgress?.grammar_progress || 0;
       const totalProg = Math.round((vocabProg + percentage + grammarProg) / 3);
 
-      if (userProgress) {
+      if (userProgress && userProgress.__backendId) {
         const progressData = {
           id: userProgress.id,
           vocabulary_progress: vocabProg,
@@ -1434,9 +1451,9 @@
         };
         const result = await window.dataSdk.update(progressData);
         if (result.isOk) {
-          // Update display immediately
-          document.getElementById('reading-progress').textContent = `${percentage}%`;
-          document.getElementById('total-progress').textContent = `${totalProg}%`;
+          // Cập nhật userProgress ngay lập tức
+          userProgress = progressData;
+          updateProgressDisplay();
         }
       } else {
         const progressData = {
@@ -1452,9 +1469,8 @@
         };
         const result = await window.dataSdk.create(progressData);
         if (result.isOk) {
-          // Update display immediately
-          document.getElementById('reading-progress').textContent = `${percentage}%`;
-          document.getElementById('total-progress').textContent = `${Math.round(percentage / 3)}%`;
+          // Dữ liệu sẽ được cập nhật qua onDataChanged
+          updateProgressDisplay();
         }
       }
 
@@ -1645,7 +1661,7 @@
       const readingProg = userProgress?.reading_progress || 0;
       const totalProg = Math.round((vocabProg + readingProg + percentage) / 3);
 
-      if (userProgress) {
+      if (userProgress && userProgress.__backendId) {
         const progressData = {
           id: userProgress.id,
           vocabulary_progress: vocabProg,
@@ -1660,9 +1676,9 @@
         };
         const result = await window.dataSdk.update(progressData);
         if (result.isOk) {
-          // Update display immediately
-          document.getElementById('grammar-progress').textContent = `${percentage}%`;
-          document.getElementById('total-progress').textContent = `${totalProg}%`;
+          // Cập nhật userProgress ngay lập tức
+          userProgress = progressData;
+          updateProgressDisplay();
         }
       } else {
         const progressData = {
@@ -1678,9 +1694,8 @@
         };
         const result = await window.dataSdk.create(progressData);
         if (result.isOk) {
-          // Update display immediately
-          document.getElementById('grammar-progress').textContent = `${percentage}%`;
-          document.getElementById('total-progress').textContent = `${Math.round(percentage / 3)}%`;
+          // Dữ liệu sẽ được cập nhật qua onDataChanged
+          updateProgressDisplay();
         }
       }
 
@@ -1842,5 +1857,5 @@
     initGrammarQuiz();
     onConfigChange(config);
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99b58539b01dfd68',t:'MTc2MjYwOTYyNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99b5a31c9509fdcc',t:'MTc2MjYxMDg1MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
