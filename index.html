@@ -220,6 +220,7 @@
     
     .progress-bar {
       transition: width 0.5s ease;
+      background-color: #0ea5e9;
     }
     
     @keyframes fadeIn {
@@ -332,8 +333,8 @@
       <div class="mb-4 sm:mb-6">
        <div class="flex justify-between items-center mb-2"><span class="text-xs sm:text-sm md:text-base font-medium">Tiến độ từ vựng</span> <span id="card-counter" class="text-xs sm:text-sm md:text-base font-medium">1 / 61</span>
        </div>
-       <div class="w-full h-2 sm:h-3 rounded-full overflow-hidden">
-        <div id="vocab-progress-bar" class="progress-bar h-full" style="width: 6.67%"></div>
+       <div class="w-full h-2 sm:h-3 rounded-full overflow-hidden" style="background-color: #e0f2fe;">
+        <div id="vocab-progress-bar" class="progress-bar h-full" style="width: 6.67%; background-color: #0ea5e9;"></div>
        </div>
       </div>
       <div id="flashcard-container" class="flashcard mb-6">
@@ -359,8 +360,8 @@
       <div class="mb-4 sm:mb-6">
        <div class="flex justify-between items-center mb-2"><span class="text-xs sm:text-sm md:text-base font-medium">Kiểm tra từ vựng</span> <span id="test-counter" class="text-xs sm:text-sm md:text-base font-medium">Câu 1 / 62</span>
        </div>
-       <div class="w-full h-2 sm:h-3 rounded-full overflow-hidden">
-        <div id="test-progress-bar" class="progress-bar h-full" style="width: 1.61%"></div>
+       <div class="w-full h-2 sm:h-3 rounded-full overflow-hidden" style="background-color: #e0f2fe;">
+        <div id="test-progress-bar" class="progress-bar h-full" style="width: 1.61%; background-color: #0ea5e9;"></div>
        </div>
       </div>
       <div id="vocab-test-container" class="max-w-4xl mx-auto"><!-- Current test question will be displayed here -->
@@ -377,10 +378,10 @@
      <div class="rounded-lg p-4 sm:p-6 md:p-8 shadow-lg mb-4 sm:mb-6">
       <h2 class="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6 leading-tight">The Impact of Global Warming on Our Planet</h2>
       <div id="reading-text" class="text-sm sm:text-base md:text-lg leading-relaxed space-y-3 sm:space-y-4 mb-6 sm:mb-8">
-       <p><span class="highlight">Global warming</span> is one of the most pressing environmental issues facing humanity today. The Earth's average temperature has risen significantly over the past century, primarily due to increased <span class="highlight">greenhouse gas emissions</span> from human activities. These emissions, particularly carbon dioxide and methane, trap heat in the atmosphere, creating what scientists call the <span class="highlight">greenhouse effect</span>.</p>
-       <p>The consequences of <span class="highlight">climate change</span> are already visible worldwide. Polar ice caps are melting at an alarming rate, causing sea levels to rise and threatening coastal communities. Extreme weather events, such as hurricanes, droughts, and floods, have become more frequent and severe. Many <span class="highlight">ecosystems</span> are struggling to adapt to these rapid changes, leading to the extinction of numerous plant and animal species.</p>
-       <p><span class="highlight">Deforestation</span> compounds the problem by removing trees that naturally absorb carbon dioxide from the atmosphere. <strong>[I]</strong> The Amazon rainforest, often called the "lungs of the Earth," has lost vast areas to logging and agriculture. <strong>[II]</strong> This destruction not only releases stored carbon but also eliminates crucial habitats for countless species. <strong>[III]</strong> Additionally, the burning of <span class="highlight">fossil fuels</span> for energy production continues to be the largest contributor to atmospheric <span class="highlight">pollution</span>. <strong>[IV]</strong></p>
-       <p>However, there is hope. Many countries are now investing in <span class="highlight">renewable energy</span> sources such as solar and wind power. Individuals can contribute by reducing their carbon footprint through simple actions like using public transportation, recycling, and consuming less meat. Scientists emphasize that if we act now, we can still mitigate the worst effects of global warming and preserve our planet for future generations. The key is immediate and collective action from governments, businesses, and individuals worldwide.</p>
+       <p><span class="highlight">Global warming</span> is one of the most <u>pressing</u> environmental issues facing humanity today. The Earth's average temperature has risen significantly over the past century, primarily due to increased <span class="highlight">greenhouse gas emissions</span> from human activities. <u>These</u> emissions, particularly carbon dioxide and methane, trap heat in the atmosphere, creating what scientists call the <span class="highlight">greenhouse effect</span>.</p>
+       <p>The consequences of <span class="highlight">climate change</span> are already visible worldwide. Polar ice caps are melting at an <u>alarming</u> rate, causing sea levels to rise and threatening coastal communities. Extreme weather events, such as hurricanes, droughts, and floods, have become more frequent and severe. Many <span class="highlight">ecosystems</span> are struggling to adapt to these rapid changes, leading to the extinction of numerous plant and animal species.</p>
+       <p><span class="highlight">Deforestation</span> compounds the problem by removing trees that naturally absorb carbon dioxide from the atmosphere. <strong>[I]</strong> The Amazon rainforest, often called the <u>"lungs of the Earth,"</u> has lost vast areas to logging and agriculture. <strong>[II]</strong> <u>This destruction not only releases stored carbon but also eliminates crucial habitats for countless species.</u> <strong>[III]</strong> Additionally, the burning of <span class="highlight">fossil fuels</span> for energy production continues to be the largest contributor to atmospheric <span class="highlight">pollution</span>. <strong>[IV]</strong></p>
+       <p>However, there is hope. Many countries are now investing in <span class="highlight">renewable energy</span> sources such as solar and wind power. Individuals can contribute by reducing their carbon footprint through simple actions like using public transportation, recycling, and consuming less meat. Scientists emphasize that <u>if we act now, we can still mitigate the worst effects of global warming and preserve our planet for future generations.</u> The key is immediate and collective action from governments, businesses, and individuals worldwide.</p>
       </div>
      </div>
      <div class="rounded-lg p-4 sm:p-6 md:p-8 shadow-lg">
@@ -623,8 +624,8 @@
         <div class="mb-4 sm:mb-6">
          <div class="flex justify-between items-center mb-2"><span class="text-xs sm:text-sm md:text-base font-medium">Tiến độ bài tập</span> <span id="grammar-counter" class="text-xs sm:text-sm md:text-base font-medium">Câu 1 / 30</span>
          </div>
-         <div class="w-full h-2 sm:h-3 rounded-full overflow-hidden">
-          <div id="grammar-progress-bar" class="progress-bar h-full" style="width: 3.33%"></div>
+         <div class="w-full h-2 sm:h-3 rounded-full overflow-hidden" style="background-color: #e0f2fe;">
+          <div id="grammar-progress-bar" class="progress-bar h-full" style="width: 3.33%; background-color: #0ea5e9;"></div>
          </div>
         </div><!-- Single question display -->
         <div id="grammar-quiz-container" class="mb-4 sm:mb-6"><!-- Current question will be displayed here -->
@@ -731,17 +732,17 @@
     // Reading quiz questions
     const readingQuestions = [
       {
-        question: "Question 1: The word 'pressing' in paragraph 1 is CLOSEST in meaning to ________________.",
+        question: "Question 1: The word <u>'pressing'</u> in paragraph 1 is CLOSEST in meaning to ________________.",
         options: ["A. simple", "B. urgent", "C. minor", "D. optional"],
         correct: 1
       },
       {
-        question: "Question 2: What does the word 'these' in paragraph 2 refer to?",
+        question: "Question 2: What does the word <u>'these'</u> in paragraph 2 refer to?",
         options: ["A. consequences", "B. ice caps", "C. sea levels", "D. extreme weather events"],
         correct: 3
       },
       {
-        question: "Question 3: The word 'alarming' in paragraph 2 is OPPOSITE in meaning to ________________.",
+        question: "Question 3: The word <u>'alarming'</u> in paragraph 2 is OPPOSITE in meaning to ________________.",
         options: ["A. frightening", "B. worrying", "C. reassuring", "D. shocking"],
         correct: 2
       },
@@ -751,7 +752,7 @@
         correct: 3
       },
       {
-        question: "Question 5: Where in the passage does the following sentence best fit? 'This destruction not only releases stored carbon but also eliminates crucial habitats for countless species.'",
+        question: "Question 5: Where in the passage does the following sentence best fit? <u>'This destruction not only releases stored carbon but also eliminates crucial habitats for countless species.'</u>",
         options: ["[I]", "[II]", "[III]", "[IV]"],
         correct: 2
       },
@@ -761,7 +762,7 @@
         correct: 1
       },
       {
-        question: "Question 7: Which of the following best paraphrases the underlined sentence in paragraph 4? 'If we act now, we can still mitigate the worst effects of global warming and preserve our planet for future generations.'",
+        question: "Question 7: Which of the following best paraphrases the underlined sentence in paragraph 4? <u>'If we act now, we can still mitigate the worst effects of global warming and preserve our planet for future generations.'</u>",
         options: ["A. Taking immediate action can help reduce the most severe impacts of climate change and protect Earth for our children.", "B. Not until we stop all human activities can global warming be completely prevented.", "C. Climate change can be solved only if governments take full responsibility without individual help.", "D. Acting now will make all environmental problems disappear immediately and permanently."],
         correct: 0
       },
@@ -1685,7 +1686,21 @@
         btn.style.color = '#ffffff';
       });
 
-      document.getElementById('vocab-progress-bar').style.backgroundColor = newConfig.primary_action_color || defaultConfig.primary_action_color;
+      const vocabProgressBar = document.getElementById('vocab-progress-bar');
+      if (vocabProgressBar) {
+        vocabProgressBar.style.backgroundColor = newConfig.primary_action_color || defaultConfig.primary_action_color;
+      }
+      
+      const testProgressBar = document.getElementById('test-progress-bar');
+      if (testProgressBar) {
+        testProgressBar.style.backgroundColor = newConfig.primary_action_color || defaultConfig.primary_action_color;
+      }
+      
+      const grammarProgressBar = document.getElementById('grammar-progress-bar');
+      if (grammarProgressBar) {
+        grammarProgressBar.style.backgroundColor = newConfig.primary_action_color || defaultConfig.primary_action_color;
+      }
+      
       document.getElementById('home-btn').style.backgroundColor = newConfig.primary_action_color || defaultConfig.primary_action_color;
 
       document.querySelectorAll('.rounded-lg.p-6, .rounded-lg.p-8, .rounded-lg.p-4').forEach(el => {
@@ -1776,5 +1791,5 @@
     initGrammarQuiz();
     onConfigChange(config);
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99b565454547fd9c',t:'MTc2MjYwODMxOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99b575a2f1dda3dd',t:'MTc2MjYwODk4OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
